@@ -19,6 +19,9 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
+    "@swc/cli": "^0.1.55",
+    "@swc/core": "^1.2.143",
+    "@swc/jest": "^0.2.17",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^13.5.0",
@@ -41,6 +44,14 @@
     ],
     "moduleNameMapper": {
       "\\.(css|less)$": "identity-obj-proxy"
+    },
+    "transform": {
+      "^.+\\.(t|j)sx?$": [
+        "@swc/jest",
+        {
+          "configFile": ".swcrc"
+        }
+      ]
     }
   }
 }
