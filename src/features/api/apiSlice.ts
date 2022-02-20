@@ -9,13 +9,31 @@ export const apiSlice = createApi({
   // All of our requests will have URLs starting with '/fakeApi'
   baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
   // The "endpoints" represent operations and requests for this server
+  tagTypes: ["Activity"],
+
   endpoints: (builder) => ({
     // The `getPosts` endpoint is a "query" operation that returns data
     getActivities: builder.query<Activity[], void>({
       query: () => "/activities",
+      providesTags: ["Activity"],
+    }),
+    getActivity: builder.query<Activity, number>({
+      query: (activityId) => `/activities/${activityId}`,
+    }),
+    addNewActivity: builder.mutation<Activity, { name: string }>({
+      query: (body) => ({
+        url: "/activities",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Activity"],
     }),
   }),
 });
 
 // Export the auto-generated hook for the `getPosts` query endpoint
-export const { useGetActivitiesQuery } = apiSlice;
+export const {
+  useGetActivitiesQuery,
+  useGetActivityQuery,
+  useAddNewActivityMutation,
+} = apiSlice;
