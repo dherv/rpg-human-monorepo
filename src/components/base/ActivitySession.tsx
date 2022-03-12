@@ -16,7 +16,13 @@ export const ActivitySession: FC<{ activityId: number }> = ({ activityId }) => {
     // TODO: get only this month session as default
     <div>
       {sessions?.map((session) => (
-        <li key={session.id}>{session.date}</li>
+        <li key={session.id}>
+          <div>{session.date}</div>
+          <div>{session.duration}</div>
+          <div>{session.note}</div>
+          <div>{session.improvement}</div>
+          <div>{session.proud}</div>
+        </li>
       ))}
     </div>
   );

@@ -9,6 +9,9 @@ export interface Session {
   duration: number;
   date: string;
   activityId: number;
+  note?: string;
+  improvement?: string;
+  proud?: string;
 }
 
 // TODO: remove if not used in future
