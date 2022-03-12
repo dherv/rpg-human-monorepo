@@ -6,6 +6,7 @@ import cors from 'cors';
 import * as dotenv from 'dotenv';
 import express from 'express';
 import helmet from 'helmet';
+import { charactersRouter } from './characters/characters.router';
 
 dotenv.config();
 
@@ -28,6 +29,11 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+
+// API
+app.use("/v1/characters", charactersRouter);
+// app.use("/v1/activities", activitiesRouter);
+// app.use("/v1/sessions", sessionsRouter);
 
 /**
  * Server Activation
