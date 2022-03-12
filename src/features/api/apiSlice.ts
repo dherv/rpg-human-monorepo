@@ -1,6 +1,6 @@
 // Import the RTK Query methods from the React-specific entry point
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Activity, Session } from '../../types/types';
+import { Activity, Character, Session } from '../../types/types';
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -53,6 +53,9 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Session"],
     }),
+    getCharacter: builder.query<Character, void>({
+      query: () => `/character`,
+    }),
   }),
 });
 
@@ -63,4 +66,5 @@ export const {
   useAddNewActivityMutation,
   useGetSessionsQuery,
   useAddNewSessionMutation,
+  useGetCharacterQuery,
 } = apiSlice;

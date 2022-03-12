@@ -14,6 +14,15 @@ const sessionsMock: Session[] = [
   { id: 3, date: "2022/01/30", activityId: 1, duration: 4 },
 ];
 
+const characterMock = {
+  id: 1,
+  name: "Bob",
+  physical: 1,
+  mental: 1,
+  courage: 1,
+  active: 2,
+};
+
 export const handlers = [
   rest.get("/api/activities", (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(activitiesMock));
@@ -49,5 +58,9 @@ export const handlers = [
     const newSession = { id: sessionsMock.length + 1, ...body };
     sessionsMock.push(newSession);
     return res(ctx.status(200), ctx.json(newSession));
+  }),
+
+  rest.get("/api/character", (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(characterMock));
   }),
 ];
