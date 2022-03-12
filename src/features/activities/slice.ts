@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// TODO: remove selected
 const initialState = { selected: null };
 const activitiesSlice = createSlice({
   name: "activities",

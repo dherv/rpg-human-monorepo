@@ -3,6 +3,7 @@ import { useAddNewActivityMutation } from '../../features/api/apiSlice';
 
 export const ActivityAddForm = () => {
   const [name, setName] = useState<string>("");
+  const [defaultTime, setDefaultTime] = useState<number>();
   const [addNewActivity, { isLoading }] = useAddNewActivityMutation();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -30,6 +31,7 @@ export const ActivityAddForm = () => {
         onChange={(event) => setName(event?.target.value)}
         placeholder="name"
       />
+      <input type="number" name="defaultTime"></input>
       <button type="submit">submit</button>
     </form>
   );

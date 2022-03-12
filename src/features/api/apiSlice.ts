@@ -1,6 +1,6 @@
 // Import the RTK Query methods from the React-specific entry point
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Activity } from '../../types/types';
+import { Activity, Session } from '../../types/types';
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -9,7 +9,7 @@ export const apiSlice = createApi({
   // All of our requests will have URLs starting with '/fakeApi'
   baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
   // The "endpoints" represent operations and requests for this server
-  tagTypes: ["Activity"],
+  tagTypes: ["Activity", "Session"],
 
   endpoints: (builder) => ({
     // The `getPosts` endpoint is a "query" operation that returns data
@@ -28,6 +28,31 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Activity"],
     }),
+    getSessions: builder.query<Session[], { activityId: number }>({
+      query: ({ activityId }) => ({
+        url: "/sessions",
+        params: { activityId },
+      }),
+      providesTags: ["Session"],
+    }),
+    addNewSession: builder.mutation<
+      Session,
+      {
+        activityId: number;
+        date: string;
+        duration: string;
+        note: string;
+        improvement: string;
+        proud: string;
+      }
+    >({
+      query: (body) => ({
+        url: "/sessions",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Session"],
+    }),
   }),
 });
 
@@ -36,4 +61,6 @@ export const {
   useGetActivitiesQuery,
   useGetActivityQuery,
   useAddNewActivityMutation,
+  useGetSessionsQuery,
+  useAddNewSessionMutation,
 } = apiSlice;

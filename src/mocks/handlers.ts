@@ -1,11 +1,17 @@
 // src/mocks/handlers.js
 import { rest } from 'msw';
-import { Activity } from '../types/types';
+import { Activity, Session } from '../types/types';
 
 const activitiesMock: Activity[] = [
-  { id: 1, name: "skateboard" },
-  { id: 2, name: "surf" },
-  { id: 3, name: "code" },
+  { id: 1, name: "skateboard", duration: 1 },
+  { id: 2, name: "surf", duration: 2 },
+  { id: 3, name: "code", duration: 4 },
+];
+
+const sessionsMock: Session[] = [
+  { id: 1, date: "2022/02/28", activityId: 1, duration: 1 },
+  { id: 2, date: "2022/02/29", activityId: 2, duration: 2 },
+  { id: 3, date: "2022/01/30", activityId: 1, duration: 4 },
 ];
 
 export const handlers = [
@@ -28,5 +34,20 @@ export const handlers = [
     const newActivity = { id: activitiesMock.length + 1, ...body };
     activitiesMock.push(newActivity);
     return res(ctx.status(200), ctx.json(newActivity));
+  }),
+
+  rest.get("/api/sessions", (req, res, ctx) => {
+    const activityId = req.url.searchParams.get("activityId");
+    const sessions = sessionsMock.filter(
+      (session) => session.activityId === Number(activityId)
+    );
+    return res(ctx.status(200), ctx.json(sessions));
+  }),
+
+  rest.post("/api/sessions", (req, res, ctx) => {
+    const { body } = req as any;
+    const newSession = { id: sessionsMock.length + 1, ...body };
+    sessionsMock.push(newSession);
+    return res(ctx.status(200), ctx.json(newSession));
   }),
 ];
