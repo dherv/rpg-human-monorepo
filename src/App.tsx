@@ -1,12 +1,22 @@
 import './App.css';
-import { ActivityContainer } from './components/base/ActivityContainer';
+import { FC } from 'react';
+import { Link, Outlet } from 'react-router-dom';
 
-function App() {
+export const App: FC = () => {
   return (
-    <main>
-      <ActivityContainer />
-    </main>
+    <>
+      <header>
+        <nav>
+          <Link to="/">Activities</Link>
+          <Link to="character">Character</Link>
+        </nav>
+      </header>
+      <main>
+        <Outlet />
+      </main>
+      <footer></footer>
+    </>
   );
-}
+};
 
 export default App;
