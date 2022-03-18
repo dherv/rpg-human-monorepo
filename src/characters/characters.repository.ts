@@ -1,7 +1,13 @@
-export const charactersRepositoryFactory = () => ({
-  get: async () => {
+import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
+
+const TABLE = `characters`;
+const PRIMARY_KEY = `character_id`;
+
+export const charactersRepositoryFactory = (pool: Pool) => ({
+  get: async (): Promise<any> => {
     try {
-      console.log("work in progress");
+      const [rows] = await pool.query(`SELECT * FROM characters`);
+      return rows;
     } catch (error) {
       console.error(error);
       return error;
@@ -24,7 +30,20 @@ export const charactersRepositoryFactory = () => ({
   },
   create: async (req: Request, res: Response) => {
     try {
-      console.log("work in progress");
+      // Insert
+      const [result] = await pool.execute(
+        `INSERT INTO characters (name, age) VALUES ("Bob", 40)`
+      );
+      const { insertId } = result as ResultSetHeader;
+
+      // Get new item
+      const [rows] = (await pool.query(
+        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ${insertId}`
+      )) as RowDataPacket[];
+
+      const character = rows[0];
+
+      return character;
     } catch (error) {
       console.error(error);
       return error;

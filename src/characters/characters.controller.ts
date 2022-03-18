@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 
 export const charactersControllerFactory = (service: any) => ({
-  get: async (req: Request, res: Response) => {
+  get: async (_req: Request, res: Response) => {
     try {
-      console.log("work in progress");
+      const characters = await service.get();
+      res.json(characters);
     } catch (error) {
       console.error(error);
       res.json({ error });
@@ -13,7 +14,7 @@ export const charactersControllerFactory = (service: any) => ({
     try {
       const { id } = req.params;
       const character = await service.getOne(id);
-      res.json({ character });
+      res.json(character);
     } catch (error) {
       console.error(error);
       res.json({ error });
@@ -21,13 +22,15 @@ export const charactersControllerFactory = (service: any) => ({
   },
   create: async (req: Request, res: Response) => {
     try {
-      console.log("work in progress");
+      const { body } = req;
+      const character = await service.create(body);
+      return res.json(character);
     } catch (error) {
       console.error(error);
       res.json({ error });
     }
   },
-  update: async (req: Request, res: Response) => {
+  update: async (_req: Request, res: Response) => {
     try {
       console.log("work in progress");
     } catch (error) {
@@ -35,7 +38,7 @@ export const charactersControllerFactory = (service: any) => ({
       res.json({ error });
     }
   },
-  delete: async (req: Request, res: Response) => {
+  delete: async (_req: Request, res: Response) => {
     try {
       console.log("work in progress");
     } catch (error) {

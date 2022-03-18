@@ -2,6 +2,7 @@ export const charactersServiceFactory = (repository: any) => ({
   get: async (req: Request, res: Response) => {
     try {
       console.log("work in progress");
+      return await repository.get();
     } catch (error) {
       console.error(error);
       return error;
@@ -18,6 +19,7 @@ export const charactersServiceFactory = (repository: any) => ({
   create: async (req: Request, res: Response) => {
     try {
       console.log("work in progress");
+      return await repository.create();
     } catch (error) {
       console.error(error);
       return error;
