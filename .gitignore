@@ -4,3 +4,6 @@
 
 # Folders
 node_modules
+
+# Liquibase
+migrations/liquibase.properties
