@@ -4,7 +4,7 @@ const TABLE = `characters`;
 const PRIMARY_KEY = `character_id`;
 
 export const charactersRepositoryFactory = (pool: Pool) => ({
-  get: async (): Promise<any> => {
+  findAll: async (): Promise<any> => {
     try {
       const [rows] = await pool.query(`SELECT * FROM characters`);
       return rows;
@@ -13,34 +13,35 @@ export const charactersRepositoryFactory = (pool: Pool) => ({
       return error;
     }
   },
-  getOne: async (id: number) => {
+  findOne: async (id: number) => {
     try {
-      return await Promise.resolve({
-        id,
-        name: "Bob",
-        physical: 1,
-        mental: 1,
-        courage: 1,
-        active: 2,
-      });
+      const [rows] = (await pool.query(
+        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
+        [id]
+      )) as RowDataPacket[];
+      const character = rows[0];
+      return character;
     } catch (error) {
       console.error(error);
       return error;
     }
   },
-  create: async (req: Request, res: Response) => {
+  create: async (body: any) => {
     try {
+      if (!body.name || !body.age) {
+        throw new Error("body not defined");
+      }
       // Insert
       const [result] = await pool.execute(
-        `INSERT INTO characters (name, age) VALUES ("Bob", 40)`
+        `INSERT INTO ${TABLE} (name, age) VALUES (?, ?)`,
+        [body.name, body.age]
       );
       const { insertId } = result as ResultSetHeader;
 
       // Get new item
       const [rows] = (await pool.query(
-        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ${insertId}`
+        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ${insertId} LIMIT 1`
       )) as RowDataPacket[];
-
       const character = rows[0];
 
       return character;
@@ -49,17 +50,32 @@ export const charactersRepositoryFactory = (pool: Pool) => ({
       return error;
     }
   },
-  update: async (req: Request, res: Response) => {
+  update: async (id: number, body: any) => {
     try {
-      console.log("work in progress");
+      if (!body.name || !body.age) {
+        throw new Error("body not defined");
+      }
+      // Update
+      await pool.execute(
+        `UPDATE ${TABLE} SET name = ?, age = ? WHERE ${PRIMARY_KEY} = ?`,
+        [body.name, body.age, id]
+      );
+
+      // GET new item
+      const [rows] = (await pool.query(
+        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
+        [id]
+      )) as RowDataPacket[];
+      const character = rows[0];
+      return character;
     } catch (error) {
       console.error(error);
       return error;
     }
   },
-  delete: async (req: Request, res: Response) => {
+  delete: async (id: number) => {
     try {
-      console.log("work in progress");
+      await pool.execute(`DELETE FROM ${TABLE} WHERE ${PRIMARY_KEY} = ?`, [id]);
     } catch (error) {
       console.error(error);
       return error;

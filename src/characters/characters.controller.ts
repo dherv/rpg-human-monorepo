@@ -1,19 +1,19 @@
 import { Request, Response } from 'express';
 
 export const charactersControllerFactory = (service: any) => ({
-  get: async (_req: Request, res: Response) => {
+  findAll: async (_req: Request, res: Response) => {
     try {
-      const characters = await service.get();
+      const characters = await service.findAll();
       res.json(characters);
     } catch (error) {
       console.error(error);
       res.json({ error });
     }
   },
-  getOne: async (req: Request, res: Response) => {
+  findOne: async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const character = await service.getOne(id);
+      const character = await service.findOne(id);
       res.json(character);
     } catch (error) {
       console.error(error);
@@ -30,17 +30,24 @@ export const charactersControllerFactory = (service: any) => ({
       res.json({ error });
     }
   },
-  update: async (_req: Request, res: Response) => {
+  update: async (req: Request, res: Response) => {
     try {
-      console.log("work in progress");
+      const {
+        body,
+        params: { id },
+      } = req;
+      const character = await service.update(id, body);
+      return res.json(character);
     } catch (error) {
       console.error(error);
       res.json({ error });
     }
   },
-  delete: async (_req: Request, res: Response) => {
+  delete: async (req: Request, res: Response) => {
     try {
-      console.log("work in progress");
+      const { id } = req.params;
+      const character = await service.delete(id);
+      res.json(character);
     } catch (error) {
       console.error(error);
       res.json({ error });

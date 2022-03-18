@@ -1,41 +1,39 @@
 export const charactersServiceFactory = (repository: any) => ({
-  get: async (req: Request, res: Response) => {
+  findAll: async () => {
     try {
-      console.log("work in progress");
-      return await repository.get();
+      return await repository.findAll();
     } catch (error) {
       console.error(error);
       return error;
     }
   },
-  getOne: async (id: number) => {
+  findOne: async (id: number) => {
     try {
-      return await repository.getOne(id);
+      return await repository.findOne(id);
     } catch (error) {
       console.error(error);
       return error;
     }
   },
-  create: async (req: Request, res: Response) => {
+  create: async (body: any) => {
     try {
-      console.log("work in progress");
-      return await repository.create();
+      return await repository.create(body);
     } catch (error) {
       console.error(error);
       return error;
     }
   },
-  update: async (req: Request, res: Response) => {
+  update: async (id: number, body: any) => {
     try {
-      console.log("work in progress");
+      return await repository.update(id, body);
     } catch (error) {
       console.error(error);
       return error;
     }
   },
-  delete: async (req: Request, res: Response) => {
+  delete: async (id: number) => {
     try {
-      console.log("work in progress");
+      return await repository.delete(id);
     } catch (error) {
       console.error(error);
       return error;

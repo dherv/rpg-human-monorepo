@@ -9,8 +9,8 @@ export const charactersRouter = (connection: any) => {
   const charactersService = charactersServiceFactory(charactersRepository);
   const charactersController = charactersControllerFactory(charactersService);
 
-  charactersRouter.get("/", charactersController.get);
-  charactersRouter.get("/:id", charactersController.getOne);
+  charactersRouter.get("/", charactersController.findAll);
+  charactersRouter.get("/:id", charactersController.findOne);
   charactersRouter.post("/", charactersController.create);
   charactersRouter.put("/:id", charactersController.update);
   charactersRouter.delete("/:id", charactersController.delete);
