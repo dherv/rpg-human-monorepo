@@ -11,7 +11,8 @@ export const ActivityAddForm = () => {
     event.preventDefault();
     if (!isLoading) {
       try {
-        await addNewActivity({ name });
+        // TODO: add validation here
+        await addNewActivity({ name, duration: Number(defaultTime) });
         setName("");
       } catch (e) {
         console.error(e);

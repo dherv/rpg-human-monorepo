@@ -1,6 +1,6 @@
 // Import the RTK Query methods from the React-specific entry point
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Activity, Character, Session } from '../../types/types';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Activity, Character, Session } from "../../types/types";
 
 // Define our single API slice object
 export const apiSlice = createApi({
@@ -20,7 +20,10 @@ export const apiSlice = createApi({
     getActivity: builder.query<Activity, number>({
       query: (activityId) => `/activities/${activityId}`,
     }),
-    addNewActivity: builder.mutation<Activity, { name: string }>({
+    addNewActivity: builder.mutation<
+      Activity,
+      { name: string; duration: number }
+    >({
       query: (body) => ({
         url: "/activities",
         method: "POST",
