@@ -1,6 +1,6 @@
-import './App.css';
-import { FC } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { FC } from "react";
+import { Link, Outlet } from "react-router-dom";
+import "./App.css";
 
 export const App: FC = () => {
   return (

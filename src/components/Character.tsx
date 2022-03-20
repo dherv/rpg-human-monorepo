@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { useGetCharacterQuery } from '../features/api/apiSlice';
+import { FC } from "react";
+import { useGetCharacterQuery } from "../features/api/apiSlice";
 
 export const Character: FC = () => {
   const { data: character, isFetching, isLoading } = useGetCharacterQuery();

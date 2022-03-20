@@ -1,6 +1,7 @@
-import { FC } from 'react';
-import { useGetSessionsQuery } from '../../features/api/apiSlice';
-import { Loader } from './Loader';
+import { List, ListItem } from "@dherv/barbarian-with-style";
+import { FC } from "react";
+import { useGetSessionsQuery } from "../../features/api/apiSlice";
+import { Loader } from "./Loader";
 
 export const ActivitySession: FC<{ activityId: number }> = ({ activityId }) => {
   const {
@@ -14,16 +15,16 @@ export const ActivitySession: FC<{ activityId: number }> = ({ activityId }) => {
   }
   return (
     // TODO: get only this month session as default
-    <div>
+    <List>
       {sessions?.map((session) => (
-        <li key={session.id}>
+        <ListItem key={session.id}>
           <div>{session.date}</div>
           <div>{session.duration}</div>
           <div>{session.note}</div>
           <div>{session.improvement}</div>
           <div>{session.proud}</div>
-        </li>
+        </ListItem>
       ))}
-    </div>
+    </List>
   );
 };

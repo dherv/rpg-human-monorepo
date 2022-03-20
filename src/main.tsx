@@ -1,13 +1,13 @@
-import './index.css';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import App from './App';
-import { store } from './app/store';
-import { ActivityContainer } from './components/base/ActivityContainer';
-import { NotFound } from './components/NotFound';
-import { worker } from './mocks/browser';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import App from "./App";
+import { store } from "./app/store";
+import { ActivityContainer } from "./components/base/ActivityContainer";
+import { NotFound } from "./components/NotFound";
+import "./index.css";
+import { worker } from "./mocks/browser";
 
 // Not exported as default need the promise default setup
 const Character = React.lazy(() =>

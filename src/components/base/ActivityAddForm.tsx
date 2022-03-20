@@ -1,9 +1,10 @@
-import { FormEvent, useState } from 'react';
-import { useAddNewActivityMutation } from '../../features/api/apiSlice';
+import { Button, Form, FormTitle, Input } from "@dherv/barbarian-with-style";
+import { FormEvent, useState } from "react";
+import { useAddNewActivityMutation } from "../../features/api/apiSlice";
 
 export const ActivityAddForm = () => {
   const [name, setName] = useState<string>("");
-  const [defaultTime, setDefaultTime] = useState<number>();
+  const [defaultTime, setDefaultTime] = useState<string>("");
   const [addNewActivity, { isLoading }] = useAddNewActivityMutation();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -19,20 +20,27 @@ export const ActivityAddForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="name" hidden>
-        name
-      </label>
-      <input
+    <Form onSubmit={handleSubmit}>
+      <FormTitle>Add activity</FormTitle>
+      <Input
         id="name"
         type="text"
+        label="name"
         name="name"
+        placeholder="name"
         value={name}
         onChange={(event) => setName(event?.target.value)}
-        placeholder="name"
       />
-      <input type="number" name="defaultTime"></input>
-      <button type="submit">submit</button>
-    </form>
+      <Input
+        type="number"
+        id="defaultTime"
+        label="default time"
+        placeholder="default time"
+        name="defaultTime"
+        value={defaultTime}
+        onChange={(event) => setDefaultTime(event?.target.value)}
+      ></Input>
+      <Button type="submit" text="submit"></Button>
+    </Form>
   );
 };

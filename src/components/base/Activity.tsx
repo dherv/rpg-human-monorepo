@@ -1,12 +1,19 @@
-import { FC, useEffect } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { DatePicker } from '@atlaskit/datetime-picker';
+import { DatePicker } from "@atlaskit/datetime-picker";
+import {
+  Button,
+  Form,
+  FormTitle,
+  Input,
+  TextArea,
+} from "@dherv/barbarian-with-style";
+import { FC, useEffect } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   useAddNewSessionMutation,
   useGetActivityQuery,
-} from '../../features/api/apiSlice';
-import { ActivitySession } from './ActivitySession';
-import { Loader } from './Loader';
+} from "../../features/api/apiSlice";
+import { ActivitySession } from "./ActivitySession";
+import { Loader } from "./Loader";
 
 type Inputs = {
   date: string;
@@ -50,8 +57,8 @@ export const Activity: FC<{ selectedId: number }> = ({ selectedId }) => {
   console.log(errors);
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <h2>update activiy - {activity?.name}</h2>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormTitle>update activiy - {activity?.name}</FormTitle>
         <div>
           <label htmlFor="date" />
           <Controller
@@ -61,48 +68,76 @@ export const Activity: FC<{ selectedId: number }> = ({ selectedId }) => {
             render={({ field }) => <DatePicker id="date" {...field} />}
           />
 
-          <label htmlFor="duration" />
-          <input
-            type="number"
-            min={0}
-            id="duration"
-            placeholder="3"
-            {...(register("duration"), { required: true })}
-          ></input>
+          <Controller
+            name="duration"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Input
+                label="duration"
+                type="number"
+                min={0}
+                id="duration"
+                placeholder="3"
+                {...field}
+              ></Input>
+            )}
+          />
         </div>
 
         <div>
-          <label htmlFor="note"></label>
-          <textarea
-            id="note"
-            {...register("note")}
-            placeholder="note - today I dropped the mini - I was scared because people were watching but ended up dropping - difference with previous session = dropped alone compare to drop with people (courage+)"
-          ></textarea>
+          <Controller
+            name="note"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <TextArea
+                label="note"
+                id="note"
+                placeholder="note - today I dropped the mini - I was scared because people were watching but ended up dropping - difference with previous session = dropped alone compare to drop with people (courage+)"
+                {...field}
+              ></TextArea>
+            )}
+          />
         </div>
 
         <div>
-          <label htmlFor="improvement"></label>
-          <textarea
-            id="improvement"
-            {...register("improvement")}
-            placeholder="what did you improve"
-          ></textarea>
+          <Controller
+            name="improvement"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <TextArea
+                label="improvement"
+                id="improvement"
+                placeholder="what did you improve"
+                {...field}
+              ></TextArea>
+            )}
+          />
         </div>
 
         <div>
-          <label htmlFor="proud"></label>
-          <textarea
-            id="proud"
-            {...register("proud")}
-            placeholder="what are you proud of during this session"
-          ></textarea>
+          <Controller
+            name="proud"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <TextArea
+                label="proud"
+                id="proud"
+                placeholder="what are you proud of during this session"
+                {...field}
+              ></TextArea>
+            )}
+          />
         </div>
 
         {/* TODO: add improve low skill like fear - procrastionation.... amount of points will add skill point ~120pts (trimestre = 1 point skill) for example- limit to 1pt per day */}
         {/* separate session info from extra rpg info - coombine with focal */}
         {/*  */}
-        <button type="submit">log session</button>
-      </form>
+        <Button type="submit" text="log session"></Button>
+      </Form>
       {activity ? <ActivitySession activityId={activity.id} /> : null}
     </>
   );
