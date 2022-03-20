@@ -1,10 +1,12 @@
+// import { SessionAddPage } from "./components/SessionAddPage";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App";
 import { store } from "./app/store";
-import { ActivityContainer } from "./components/base/ActivityContainer";
+import { MenuPage } from "./components/MenuPage";
+// import { ActivityContainer } from "./components/base/ActivityContainer";
 import { NotFound } from "./components/NotFound";
 import "./index.css";
 import { worker } from "./mocks/browser";
@@ -13,6 +15,18 @@ import { worker } from "./mocks/browser";
 const Character = React.lazy(() =>
   import("./components/Character").then(({ Character }) => ({
     default: Character,
+  }))
+);
+const ActivityContainer = React.lazy(() =>
+  import("./components/base/ActivityContainer").then(
+    ({ ActivityContainer }) => ({
+      default: ActivityContainer,
+    })
+  )
+);
+const SessionAddPage = React.lazy(() =>
+  import("./components/SessionAddPage").then(({ SessionAddPage }) => ({
+    default: SessionAddPage,
   }))
 );
 
@@ -26,12 +40,28 @@ ReactDOM.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />}>
-            <Route index element={<ActivityContainer />} />
+            <Route index element={<MenuPage />} />
+            <Route
+              path="/activities"
+              element={
+                <React.Suspense fallback={<>...</>}>
+                  <ActivityContainer />
+                </React.Suspense>
+              }
+            />
             <Route
               path="/character"
               element={
                 <React.Suspense fallback={<>...</>}>
                   <Character />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path="/new-session"
+              element={
+                <React.Suspense fallback={<>...</>}>
+                  <SessionAddPage />
                 </React.Suspense>
               }
             />

@@ -6,13 +6,13 @@ import {
   Input,
   TextArea,
 } from "@dherv/barbarian-with-style";
+import { skipToken } from "@reduxjs/toolkit/dist/query/react";
 import { FC, useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   useAddNewSessionMutation,
   useGetActivityQuery,
 } from "../../features/api/apiSlice";
-import { ActivitySession } from "./ActivitySession";
 import { Loader } from "./Loader";
 
 type Inputs = {
@@ -24,13 +24,15 @@ type Inputs = {
 };
 
 // TODO: rename ActivityAddSession
-export const Activity: FC<{ selectedId: number }> = ({ selectedId }) => {
+export const SessionAddForm: FC<{ selectedActivityId?: number }> = ({
+  selectedActivityId,
+}) => {
   // Data
   const {
     data: activity,
     isFetching,
     isLoading,
-  } = useGetActivityQuery(selectedId);
+  } = useGetActivityQuery(selectedActivityId ?? skipToken);
   const [addNewSession] = useAddNewSessionMutation();
 
   // Form
@@ -42,19 +44,29 @@ export const Activity: FC<{ selectedId: number }> = ({ selectedId }) => {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const response = await addNewSession({ activityId: selectedId, ...data });
+    if (typeof selectedActivityId === "undefined") {
+      return;
+    }
+    const response = await addNewSession({
+      activityId: selectedActivityId,
+      ...data,
+    });
     console.log("handlesubmit", response);
   };
 
   useEffect(() => {
-    setValue("duration", activity?.duration.toString() ?? "");
+    const value = activity?.duration ? activity?.duration.toString() : "";
+    setValue("duration", value);
   }, [activity]);
 
   if (isFetching || isLoading) {
     return <Loader />;
   }
 
-  console.log(errors);
+  if (selectedActivityId === undefined) {
+    return null;
+  }
+
   return (
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -138,7 +150,6 @@ export const Activity: FC<{ selectedId: number }> = ({ selectedId }) => {
         {/*  */}
         <Button type="submit" text="log session"></Button>
       </Form>
-      {activity ? <ActivitySession activityId={activity.id} /> : null}
     </>
   );
 };

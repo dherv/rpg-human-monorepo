@@ -7,8 +7,10 @@ export const App: FC = () => {
     <>
       <header>
         <nav>
-          <Link to="/">Activities</Link>
+          <Link to="/">Menu</Link>
+          <Link to="/activities">Activities</Link>
           <Link to="character">Character</Link>
+          <Link to="new-session">Log Session</Link>
         </nav>
       </header>
       <main>
