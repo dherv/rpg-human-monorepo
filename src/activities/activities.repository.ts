@@ -1,12 +1,12 @@
 import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
-const TABLE = `characters`;
-const PRIMARY_KEY = `character_id`;
+const TABLE = `activities`;
+const PRIMARY_KEY = `activity_id`;
 
-export const charactersRepositoryFactory = (pool: Pool) => ({
+export const activitiesRepositoryFactory = (pool: Pool) => ({
   findAll: async (): Promise<any> => {
     try {
-      const [rows] = await pool.query(`SELECT * FROM characters`);
+      const [rows] = await pool.query(`SELECT * FROM activities`);
       return rows;
     } catch (error) {
       console.error(error);
@@ -19,23 +19,27 @@ export const charactersRepositoryFactory = (pool: Pool) => ({
         `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
         [id]
       )) as RowDataPacket[];
-      const character = rows[0];
-      return character;
+      const activity = rows[0];
+      return activity;
     } catch (error) {
       console.error(error);
       return error;
     }
   },
+  // TODO: add proper types
   create: async (body: any) => {
     try {
+      console.log({ body });
       // TODO: add proper validation
-      if (!body.name || !body.age) {
+      if (!body.name || !body.character_id || !body.duration) {
         throw new Error("body not defined");
       }
+
+      // TODO: insert only of character exists
       // Insert
       const [result] = await pool.execute(
-        `INSERT INTO ${TABLE} (name, age) VALUES (?, ?)`,
-        [body.name, body.age]
+        `INSERT INTO ${TABLE} (name, duration, character_id) VALUES (?, ?, ?)`,
+        [body.name, body.duration, body.character_id]
       );
       const { insertId } = result as ResultSetHeader;
 
@@ -43,9 +47,9 @@ export const charactersRepositoryFactory = (pool: Pool) => ({
       const [rows] = (await pool.query(
         `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ${insertId} LIMIT 1`
       )) as RowDataPacket[];
-      const character = rows[0];
+      const activity = rows[0];
 
-      return character;
+      return activity;
     } catch (error) {
       console.error(error);
       return error;
@@ -53,13 +57,14 @@ export const charactersRepositoryFactory = (pool: Pool) => ({
   },
   update: async (id: number, body: any) => {
     try {
-      if (!body.name || !body.age) {
+      if (!body.name || !body.character_id || !body.duration) {
         throw new Error("body not defined");
       }
+      // TODO: update only if character exists
       // Update
       await pool.execute(
-        `UPDATE ${TABLE} SET name = ?, age = ? WHERE ${PRIMARY_KEY} = ?`,
-        [body.name, body.age, id]
+        `UPDATE ${TABLE} SET name = ?, character_id = ?, duration = ? WHERE ${PRIMARY_KEY} = ?`,
+        [body.name, body.character_id, body.duration, id]
       );
 
       // GET new item
@@ -67,8 +72,8 @@ export const charactersRepositoryFactory = (pool: Pool) => ({
         `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
         [id]
       )) as RowDataPacket[];
-      const character = rows[0];
-      return character;
+      const activity = rows[0];
+      return activity;
     } catch (error) {
       console.error(error);
       return error;

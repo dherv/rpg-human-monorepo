@@ -1,8 +1,8 @@
 import { mockRequest, mockResponse, mockService } from '../../mocks/mocks';
-import { charactersControllerFactory } from './characters.controller';
+import { activitiesControllerFactory } from './activities.controller';
 
-test("should get all characters from service and send it as json response", async () => {
-  await charactersControllerFactory(mockService).findAll(
+test("should get all activities from service and send it as json response", async () => {
+  await activitiesControllerFactory(mockService).findAll(
     mockRequest,
     mockResponse
   );
@@ -12,8 +12,8 @@ test("should get all characters from service and send it as json response", asyn
   });
 });
 
-test("should find a character from service and send it as json response", async () => {
-  await charactersControllerFactory(mockService).findOne(
+test("should find a activity from service and send it as json response", async () => {
+  await activitiesControllerFactory(mockService).findOne(
     mockRequest,
     mockResponse
   );
@@ -23,8 +23,8 @@ test("should find a character from service and send it as json response", async 
   });
 });
 
-test("should create a new character from service and send it as json response", async () => {
-  await charactersControllerFactory(mockService).create(
+test("should create a new activity from service and send it as json response", async () => {
+  await activitiesControllerFactory(mockService).create(
     mockRequest,
     mockResponse
   );
@@ -35,8 +35,8 @@ test("should create a new character from service and send it as json response", 
   });
 });
 
-test("should update a character from service and send it as json response", async () => {
-  await charactersControllerFactory(mockService).update(
+test("should update a activity from service and send it as json response", async () => {
+  await activitiesControllerFactory(mockService).update(
     mockRequest,
     mockResponse
   );
@@ -47,8 +47,8 @@ test("should update a character from service and send it as json response", asyn
   });
 });
 
-test("should delete a character from service and send it as json response", async () => {
-  await charactersControllerFactory(mockService).delete(
+test("should delete a activity from service and send it as json response", async () => {
+  await activitiesControllerFactory(mockService).delete(
     mockRequest,
     mockResponse
   );
