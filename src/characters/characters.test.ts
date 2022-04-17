@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app, connection, server } from '../';
+import { app, connection } from '../';
 
 const body = { name: "test", age: 20 };
 const updateBody = { name: "test", age: 40 };
@@ -77,12 +77,12 @@ describe("characters", function () {
     expect(responseGet.body).toBeFalsy();
   });
 
-  beforeAll(async () => {
-    server.close();
-  });
+  // beforeAll(async () => {
+  //   server.close();
+  // });
 
   afterAll(async () => {
-    server.close();
+    // server.close();
     // TODO: add all tables in setupFiles ?
     // TODO: find a way to make it secure
     await connection.execute("SET FOREIGN_KEY_CHECKS = 0");

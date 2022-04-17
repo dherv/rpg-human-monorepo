@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app, connection, server } from '../';
+import { app, connection } from '../';
 
 const body = { name: "activity", duration: "1", character_id: 1 };
 const updateBody = { name: "activity_update", duration: "2", character_id: 1 };
@@ -76,7 +76,7 @@ describe("activities", function () {
   });
 
   const closeServer = async () => {
-    server.close();
+    // server.close();
     // TODO: add all tables in setupFiles ?
     // TODO: find a way to make it secure
     await connection.execute("SET FOREIGN_KEY_CHECKS = 0");
@@ -88,9 +88,9 @@ describe("activities", function () {
     console.log("... Test Ended");
   };
 
-  beforeAll(async () => {
-    server.close();
-  });
+  // beforeAll(async () => {
+  //   server.close();
+  // });
 
   afterAll(async () => {
     await closeServer();
