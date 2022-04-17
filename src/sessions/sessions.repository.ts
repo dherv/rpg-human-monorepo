@@ -1,4 +1,5 @@
 import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
+import { sqlInclude } from '../helpers';
 
 const TABLE = `sessions`;
 const PRIMARY_KEY = `session_id`;
@@ -6,8 +7,22 @@ const PRIMARY_KEY = `session_id`;
 export const sessionsRepositoryFactory = (pool: Pool) => ({
   findAll: async (): Promise<any> => {
     try {
-      const [rows] = await pool.query(`SELECT * FROM sessions`);
-      return rows;
+      const [rows] = (await pool.query(
+        `SELECT * FROM sessions`
+      )) as RowDataPacket[][];
+
+      // get relation
+      const rowsMap = rows.map(async (session) => {
+        return sqlInclude({
+          pool,
+          item: session,
+          table: "activities",
+          primaryKey: "activity_id",
+          primaryKeyValue: session.activity_id,
+        });
+      });
+
+      return Promise.all(rowsMap);
     } catch (error) {
       console.error(error);
       return error;
@@ -20,7 +35,13 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
         [id]
       )) as RowDataPacket[];
       const session = rows[0];
-      return session;
+      return sqlInclude({
+        pool,
+        item: session,
+        table: "activities",
+        primaryKey: "activity_id",
+        primaryKeyValue: session.activity_id,
+      });
     } catch (error) {
       console.error(error);
       return error;
