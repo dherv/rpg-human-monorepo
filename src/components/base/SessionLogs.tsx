@@ -10,7 +10,10 @@ export const SessionLogs: FC = () => {
     <div>
       <List>
         {sessions?.map((session) => (
-          <ListItem className="flex items-center justify-between p-2">
+          <ListItem
+            key={session.session_id}
+            className="flex items-center justify-between p-2"
+          >
             <div className="flex items-center">
               <Dot color="blue" />
               <p className="mx-2">{session.activity?.name}</p>

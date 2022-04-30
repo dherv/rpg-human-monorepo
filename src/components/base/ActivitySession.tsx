@@ -13,6 +13,7 @@ export const ActivitySession: FC<{ activityId: number }> = ({ activityId }) => {
   if (isLoading || isFetching) {
     return <Loader />;
   }
+
   return (
     // TODO: get only this month session as default
     <List>
