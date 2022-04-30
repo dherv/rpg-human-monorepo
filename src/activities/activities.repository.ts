@@ -6,8 +6,18 @@ const PRIMARY_KEY = `activity_id`;
 export const activitiesRepositoryFactory = (pool: Pool) => ({
   findAll: async (): Promise<any> => {
     try {
-      const [rows] = await pool.query(`SELECT * FROM activities`);
-      return rows;
+      const [activities] = (await pool.query(
+        `SELECT * FROM activities`
+      )) as RowDataPacket[][];
+      const result = activities.map(async (activity) => {
+        // get relationship
+        const [sessions] = (await pool.query(
+          `SELECT * FROM sessions s WHERE ${PRIMARY_KEY} = ?`,
+          [activity.activity_id]
+        )) as RowDataPacket[];
+        return { ...activity, sessions };
+      });
+      return Promise.all(result);
     } catch (error) {
       console.error(error);
       return error;
@@ -20,7 +30,14 @@ export const activitiesRepositoryFactory = (pool: Pool) => ({
         [id]
       )) as RowDataPacket[];
       const activity = rows[0];
-      return activity;
+
+      // get relationship
+      const [sessions] = (await pool.query(
+        `SELECT * FROM sessions s WHERE ${PRIMARY_KEY} = ?`,
+        [id]
+      )) as RowDataPacket[];
+
+      return { ...activity, sessions };
     } catch (error) {
       console.error(error);
       return error;
