@@ -1,19 +1,19 @@
-import { DatePicker } from "@atlaskit/datetime-picker";
+import { FC, useEffect } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { DatePicker } from '@atlaskit/datetime-picker';
 import {
   Button,
   Form,
   FormTitle,
   Input,
   TextArea,
-} from "@dherv/barbarian-with-style";
-import { skipToken } from "@reduxjs/toolkit/dist/query/react";
-import { FC, useEffect } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+} from '@dherv/barbarian-with-style';
+import { skipToken } from '@reduxjs/toolkit/dist/query/react';
 import {
   useAddNewSessionMutation,
   useGetActivityQuery,
-} from "../../features/api/apiSlice";
-import { Loader } from "./Loader";
+} from '../../features/api/apiSlice';
+import { Loader } from './Loader';
 
 type Inputs = {
   date: string;
@@ -48,7 +48,7 @@ export const SessionAddForm: FC<{ selectedActivityId?: number }> = ({
       return;
     }
     const response = await addNewSession({
-      activityId: selectedActivityId,
+      activity_id: selectedActivityId,
       ...data,
     });
     console.log("handlesubmit", response);

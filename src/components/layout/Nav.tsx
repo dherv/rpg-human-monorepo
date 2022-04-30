@@ -26,7 +26,7 @@ export const Nav: FC = () => {
             </CustomLink>
           </li>
           <li className="mx-2">
-            <CustomLink to="/sessions/graph">
+            <CustomLink to="/new-session">
               <PlusIcon className="h-4 w-4 text-gray-600" />
             </CustomLink>
           </li>

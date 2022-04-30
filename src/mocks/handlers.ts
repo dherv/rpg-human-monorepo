@@ -1,6 +1,6 @@
 // src/mocks/handlers.js
-import { rest } from 'msw';
-import { Activity, Session } from '../types/types';
+import { rest } from "msw";
+import { Activity, Session } from "../types/types";
 
 const activitiesMock: Activity[] = [
   { id: 1, name: "skateboard", duration: 1 },
@@ -10,8 +10,8 @@ const activitiesMock: Activity[] = [
 
 const sessionsMock: Session[] = [
   { id: 1, date: "2022/02/28", activityId: 1, duration: 1 },
-  { id: 2, date: "2022/02/29", activityId: 2, duration: 2 },
-  { id: 3, date: "2022/01/30", activityId: 1, duration: 4 },
+  { id: 2, date: "2022/02/30", activityId: 2, duration: 2 },
+  { id: 3, date: "2022/02/30", activityId: 1, duration: 4 },
 ];
 
 const characterMock = {
@@ -47,9 +47,18 @@ export const handlers = [
 
   rest.get("/api/sessions", (req, res, ctx) => {
     const activityId = req.url.searchParams.get("activityId");
-    const sessions = sessionsMock.filter(
-      (session) => session.activityId === Number(activityId)
-    );
+    const sessions = activityId
+      ? sessionsMock.filter(
+          (session) => session.activityId === Number(activityId)
+        )
+      : sessionsMock.map((session) => {
+          return {
+            ...session,
+            activity: activitiesMock.find(
+              (activity) => activity.id === session.activityId
+            ),
+          };
+        });
     return res(ctx.status(200), ctx.json(sessions));
   }),
 

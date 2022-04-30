@@ -1,14 +1,14 @@
-import { List, ListItem } from "@dherv/barbarian-with-style";
-import { FC } from "react";
-import { useGetSessionsQuery } from "../../features/api/apiSlice";
-import { Loader } from "./Loader";
+import { FC } from 'react';
+import { List, ListItem } from '@dherv/barbarian-with-style';
+import { useGetSessionsByActivityQuery } from '../../features/api/apiSlice';
+import { Loader } from './Loader';
 
 export const ActivitySession: FC<{ activityId: number }> = ({ activityId }) => {
   const {
     data: sessions,
     isLoading,
     isFetching,
-  } = useGetSessionsQuery({ activityId });
+  } = useGetSessionsByActivityQuery({ activityId });
 
   if (isLoading || isFetching) {
     return <Loader />;
@@ -17,7 +17,7 @@ export const ActivitySession: FC<{ activityId: number }> = ({ activityId }) => {
     // TODO: get only this month session as default
     <List>
       {sessions?.map((session) => (
-        <ListItem key={session.id}>
+        <ListItem key={session.session_id}>
           <div>{session.date}</div>
           <div>{session.duration}</div>
           <div>{session.note}</div>

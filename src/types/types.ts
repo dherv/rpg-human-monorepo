@@ -1,17 +1,19 @@
 export interface Activity {
-  id: number;
+  activity_id: number;
   name: string;
   duration: number;
 }
 
 export interface Session {
-  id: number;
+  session_id: number;
   duration: number;
   date: string;
-  activityId: number;
+  activity_id: number;
   note?: string;
   improvement?: string;
   proud?: string;
+
+  activity?: Activity;
 }
 
 // TODO: remove if not used in future
@@ -30,6 +32,6 @@ interface Traits extends PositiveTraits {
   mental: number;
 }
 export interface Character extends Traits {
-  id: number;
+  character_id: number;
   name: string;
 }

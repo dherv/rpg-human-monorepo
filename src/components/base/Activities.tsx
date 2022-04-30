@@ -1,6 +1,6 @@
-import { List, ListItem, Title } from "@dherv/barbarian-with-style";
-import { FC } from "react";
-import { useGetActivitiesQuery } from "../../features/api/apiSlice";
+import { FC } from 'react';
+import { List, ListItem, Title } from '@dherv/barbarian-with-style';
+import { useGetActivitiesQuery } from '../../features/api/apiSlice';
 
 export const Activities: FC<{ onClick: (activityId: number) => void }> = ({
   onClick,
@@ -24,8 +24,8 @@ export const Activities: FC<{ onClick: (activityId: number) => void }> = ({
   } else if (isSuccess) {
     content = activities?.map((activity) => (
       <ListItem
-        key={activity.id}
-        onClick={() => handleSelectActivity(activity.id)}
+        key={activity.activity_id}
+        onClick={() => handleSelectActivity(activity.activity_id)}
       >
         {activity.name}
       </ListItem>
