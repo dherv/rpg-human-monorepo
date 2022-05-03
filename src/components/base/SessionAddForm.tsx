@@ -51,7 +51,6 @@ export const SessionAddForm: FC<{ selectedActivityId?: number }> = ({
       activity_id: selectedActivityId,
       ...data,
     });
-    console.log("handlesubmit", response);
   };
 
   useEffect(() => {

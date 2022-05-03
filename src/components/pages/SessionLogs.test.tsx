@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { store } from '../../app/store';
 import { SessionLogs } from './SessionLogs';
 
-describe("ActivitySession component", () => {
+describe("SessionLogs component", () => {
   const baseProps = {};
   beforeEach(() =>
     render(
@@ -13,11 +13,16 @@ describe("ActivitySession component", () => {
     )
   );
 
-  it("should display the right dot color", async () => {
+  it("should display the right activity color dot", async () => {
     const color = await screen.findAllByTitle("activity color");
     expect(color[0].nextSibling).toHaveAttribute("fill", "blue");
   });
+
   it("should display the date formatted properly", async () => {
     expect(await screen.findAllByText("03/02/2022")).toBeDefined();
   });
+
+  it("should filter the list by activity", () => {});
+  it("should filter the list by month", () => {});
+  it("should filter the list by year", () => {});
 });

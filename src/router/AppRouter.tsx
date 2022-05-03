@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from '../App';
 import ErrorBoundary from '../app/ErrorBoundary';
 import { SessionGraph } from '../components/base/SessionGraph';
-import { SessionLogs } from '../components/base/SessionLogs';
 import { NotFound } from '../components/pages/NotFound';
+import { SessionLogs } from '../components/pages/SessionLogs';
 
 // Not exported as default need the promise default setup
 const Character = React.lazy(() =>

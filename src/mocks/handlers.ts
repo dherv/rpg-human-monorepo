@@ -50,7 +50,6 @@ export const handlers = [
 
   rest.get(`${url}/sessions`, (req, res, ctx) => {
     const activityId = req.url.searchParams.get("activityId");
-    console.log({ activityId, sessionsMock });
     const sessions = activityId
       ? sessionsMock.filter(
           (session) => session.activity_id === Number(activityId)
