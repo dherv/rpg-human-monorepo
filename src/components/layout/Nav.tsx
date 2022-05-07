@@ -8,7 +8,7 @@ import { CustomLink } from './CustomLink';
 
 export const Nav: FC = () => {
   return (
-    <nav className="mb-4">
+    <nav>
       <ul className="flex justify-between items-center text-sm p-2 -ml-2">
         <div className="flex">
           <li className="mx-2">
@@ -18,7 +18,6 @@ export const Nav: FC = () => {
             <CustomLink to="/activities">activities</CustomLink>
           </li>
         </div>
-
         <div className="flex">
           <li className="mx-2">
             <CustomLink to="/sessions/graph">

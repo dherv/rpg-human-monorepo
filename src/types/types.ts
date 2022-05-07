@@ -12,7 +12,7 @@ export interface Session {
   note?: string;
   improvement?: string;
   proud?: string;
-
+  newSkill?: string;
   activity?: Activity;
 }
 

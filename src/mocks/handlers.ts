@@ -1,27 +1,6 @@
 // src/mocks/handlers.js
 import { rest } from 'msw';
-import { Activity, Session } from '../types/types';
-
-const activitiesMock: Activity[] = [
-  { activity_id: 1, name: "skateboard", duration: 1 },
-  { activity_id: 2, name: "surf", duration: 2 },
-  { activity_id: 3, name: "code", duration: 4 },
-];
-
-const sessionsMock: Session[] = [
-  { session_id: 1, date: "2022/02/28", activity_id: 1, duration: 1 },
-  { session_id: 2, date: "2022/02/30", activity_id: 2, duration: 2 },
-  { session_id: 3, date: "2022/02/30", activity_id: 1, duration: 4 },
-];
-
-const characterMock = {
-  id: 1,
-  name: "Bob",
-  physical: 1,
-  mental: 1,
-  courage: 1,
-  active: 2,
-};
+import { activitiesMock, characterMock, sessionsMock } from './mocks';
 
 const url = `http://localhost:5000/v1`;
 export const handlers = [
@@ -49,19 +28,20 @@ export const handlers = [
   }),
 
   rest.get(`${url}/sessions`, (req, res, ctx) => {
-    const activityId = req.url.searchParams.get("activityId");
-    const sessions = activityId
-      ? sessionsMock.filter(
-          (session) => session.activity_id === Number(activityId)
-        )
-      : sessionsMock.map((session) => {
-          return {
-            ...session,
-            activity: activitiesMock.find(
-              (activity) => activity.activity_id === session.activity_id
-            ),
-          };
-        });
+    const activity = req.url.searchParams.get("activity");
+    const month = req.url.searchParams.get("month");
+    const year = req.url.searchParams.get("year");
+
+    let sessions = sessionsMock.filter((session) => {
+      let activityFilter =
+          !activity || session.activity_id === Number(activity),
+        monthFilter =
+          !month || new Date(session.date).getMonth() === Number(month),
+        yearFilter =
+          !year || new Date(session.date).getFullYear() === Number(year);
+
+      return activityFilter && monthFilter && yearFilter;
+    });
     return res(ctx.status(200), ctx.json(sessions));
   }),
 

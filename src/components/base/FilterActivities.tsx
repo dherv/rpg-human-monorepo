@@ -22,7 +22,9 @@ export const FilterActivities: FC<Props> = ({ activity, onChange }) => {
     <select value={activity} onChange={handleChange}>
       <option value={undefined}>all</option>
       {ordererdActivities?.map((activity) => (
-        <option value={activity.activity_id}>{activity.name}</option>
+        <option key={activity.activity_id} value={activity.activity_id}>
+          {activity.name}
+        </option>
       ))}
     </select>
   );

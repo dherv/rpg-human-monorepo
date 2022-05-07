@@ -1,5 +1,7 @@
+import { format } from 'date-fns';
 import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { store } from '../../app/store';
 import { SessionLogs } from './SessionLogs';
 
@@ -13,13 +15,30 @@ describe("SessionLogs component", () => {
     )
   );
 
+  afterEach(() => jest.resetAllMocks());
+
   it("should display the right activity color dot", async () => {
     const color = await screen.findAllByTitle("activity color");
     expect(color[0].nextSibling).toHaveAttribute("fill", "blue");
   });
 
   it("should display the date formatted properly", async () => {
-    expect(await screen.findAllByText("03/02/2022")).toBeDefined();
+    const today = format(new Date(), "MM/dd/yyyy");
+    expect(await screen.findAllByText(today)).toBeDefined();
+  });
+
+  it("should set the default month and year to today's date", async () => {
+    const month = format(Date.now(), "MMMM");
+    expect(await screen.findByLabelText("month")).toHaveDisplayValue(month);
+  });
+
+  // FIXME: test is very slow and working only on it.only mode
+  it.skip("should select all logs when set to all", async () => {
+    const monthSelect = screen.getByLabelText("month");
+    const yearSelect = screen.getByLabelText("year");
+    userEvent.selectOptions(monthSelect, "all");
+    userEvent.selectOptions(yearSelect, "all");
+    expect(await screen.findAllByRole("listitem")).toHaveLength(3);
   });
 
   it("should filter the list by activity", () => {});

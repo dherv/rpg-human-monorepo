@@ -31,9 +31,13 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Activity"],
     }),
-    getSessions: builder.query<Session[], void>({
-      query: () => ({
+    getSessions: builder.query<
+      Session[],
+      { activity?: number; month?: number; year?: number }
+    >({
+      query: ({ activity, month, year }) => ({
         url: "/sessions",
+        params: { activity, month, year },
       }),
       providesTags: ["Session"],
     }),

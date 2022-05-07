@@ -1,21 +1,24 @@
-import { format } from 'date-fns';
+import { getMonth, getYear } from 'date-fns';
 import { FC, useState } from 'react';
-import { List, ListItem } from '@dherv/barbarian-with-style';
+import { List } from '@dherv/barbarian-with-style';
 import { useGetSessionsQuery } from '../../features/api/apiSlice';
-import { Dot } from '../base/Dot';
 import { FilterActivities } from '../base/FilterActivities';
 import { FilterMonth } from '../base/FilterMonth';
 import { FilterYear } from '../base/FilterYear';
+import { SessionLog } from '../features/SessionLog';
 
 export const SessionLogs: FC = () => {
-  const { data: sessions, isLoading, isFetching } = useGetSessionsQuery();
-  // TODO: move to useReducer and group ?
-
   // TODO: set default month and year and query by this ?
-  const [month, setMonth] = useState<number>();
-  const [year, setYear] = useState<number>();
+  const [month, setMonth] = useState<number | undefined>(getMonth(new Date()));
+  const [year, setYear] = useState<number | undefined>(getYear(new Date()));
   const [activity, setActivity] = useState<number>();
-
+  const {
+    data: sessions,
+    isLoading,
+    isFetching,
+  } = useGetSessionsQuery({ activity, month, year });
+  // TODO: move to useReducer and group ?
+  console.log({ month, year, activity });
   return (
     <section>
       <>
@@ -28,16 +31,7 @@ export const SessionLogs: FC = () => {
       </>
       <List>
         {sessions?.map((session) => (
-          <ListItem
-            key={session.session_id}
-            className="flex items-center justify-between p-2"
-          >
-            <div className="flex items-center">
-              <Dot color="blue" />
-              <p className="mx-2">{session.activity?.name}</p>
-            </div>
-            <p>{format(new Date(session.date), "MM/dd/yyyy")}</p>
-          </ListItem>
+          <SessionLog key={session.session_id} session={session} />
         ))}
       </List>
     </section>
