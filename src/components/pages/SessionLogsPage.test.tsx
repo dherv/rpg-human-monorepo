@@ -3,14 +3,14 @@ import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { store } from '../../app/store';
-import { SessionLogs } from './SessionLogs';
+import { SessionLogsPage } from './SessionLogsPage';
 
 describe("SessionLogs component", () => {
   const baseProps = {};
   beforeEach(() =>
     render(
       <Provider store={store}>
-        <SessionLogs {...baseProps} />
+        <SessionLogsPage {...baseProps} />
       </Provider>
     )
   );

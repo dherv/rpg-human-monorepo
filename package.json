@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@atlaskit/datetime-picker": "^11.1.7",
-    "@dherv/barbarian-with-style": "^1.0.1",
     "@heroicons/react": "^1.0.6",
     "@reduxjs/toolkit": "^1.7.2",
     "date-fns": "^2.28.0",

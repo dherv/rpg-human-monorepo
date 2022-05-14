@@ -4,7 +4,7 @@ import App from '../App';
 import ErrorBoundary from '../app/ErrorBoundary';
 import { SessionGraph } from '../components/base/SessionGraph';
 import { NotFound } from '../components/pages/NotFound';
-import { SessionLogs } from '../components/pages/SessionLogs';
+import { SessionLogsPage } from '../components/pages/SessionLogsPage';
 
 // Not exported as default need the promise default setup
 const Character = React.lazy(() =>
@@ -31,7 +31,7 @@ export const AppRouter: FC = () => {
         <Routes>
           <Route path="/" element={<App />}>
             <Route path="sessions">
-              <Route index element={<SessionLogs />}></Route>
+              <Route index element={<SessionLogsPage />}></Route>
               <Route path="graph" element={<SessionGraph />}></Route>
             </Route>
             <Route

@@ -9,7 +9,7 @@ export const SessionLogDetail: FC<Props> = ({ title, content }) => {
   return content ? (
     <li className="mb-2">
       <div className="text-xs text-gray-800 font-medium">{title}</div>
-      <div className="text-xs text-gray-500 font-regular">{content}</div>
+      <div className="text-xs text-gray-500 font-light">{content}</div>
     </li>
   ) : null;
 };
