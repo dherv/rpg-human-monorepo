@@ -31,7 +31,7 @@ export const activitiesServiceFactory = (repository: any) => ({
       return error;
     }
   },
-  delete: async (id: number) => {
+  delete: async (id: string) => {
     try {
       return await repository.delete(id);
     } catch (error) {

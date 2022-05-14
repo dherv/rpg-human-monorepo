@@ -1,13 +1,18 @@
-export const sessionsServiceFactory = (repository: any) => ({
-  findAll: async () => {
+import { sessionsRepositoryFactory } from './sessions.repository';
+import { SessionsQueryParams } from './sessions.types';
+
+export const sessionsServiceFactory = (
+  repository: ReturnType<typeof sessionsRepositoryFactory>
+) => ({
+  findAll: async (queryParams?: SessionsQueryParams) => {
     try {
-      return await repository.findAll();
+      return await repository.findAll(queryParams);
     } catch (error) {
       console.error(error);
       return error;
     }
   },
-  findOne: async (id: number) => {
+  findOne: async (id: string) => {
     try {
       return await repository.findOne(id);
     } catch (error) {
@@ -23,7 +28,7 @@ export const sessionsServiceFactory = (repository: any) => ({
       return error;
     }
   },
-  update: async (id: number, body: any) => {
+  update: async (id: string, body: any) => {
     try {
       return await repository.update(id, body);
     } catch (error) {
@@ -31,7 +36,7 @@ export const sessionsServiceFactory = (repository: any) => ({
       return error;
     }
   },
-  delete: async (id: number) => {
+  delete: async (id: string) => {
     try {
       return await repository.delete(id);
     } catch (error) {

@@ -17,5 +17,5 @@ export const sqlInclude = async <T, K extends keyof T>({
   const [rows] = (await pool.query(
     `SELECT * FROM ${table} WHERE ${primaryKey} = ${primaryKeyValue} LIMIT 1`
   )) as RowDataPacket[];
-  return { ...item, activity: rows[0] };
+  return item ? { ...item, activity: rows[0] } : undefined;
 };

@@ -20,13 +20,27 @@ const updateBody = {
 };
 
 // TODO: add proper integration testing using docker and verdaccio
+
+// TODO: fix timezone issue in test
+
+// TODO: add create in beforeAll to be able to run it.only on every test
 describe("sessions", function () {
   beforeAll(async () => {
     // Seed one user
-    await request(app).post("/v1/characters").send({ name: "test", age: 20 });
-    await request(app)
-      .post("/v1/activities")
-      .send({ name: "activity", duration: "1", character_id: 1 });
+    const character = await request(app)
+      .post("/v1/characters")
+      .send({ name: "test", age: 20 });
+
+    const activity = await request(app).post("/v1/activities").send({
+      name: "activity",
+      duration: "1",
+      character_id: character.body.character_id,
+    });
+
+    body.character_id = character.body.character_id;
+    body.activity_id = activity.body.activity_id;
+    updateBody.activity_id = activity.body.activity_id;
+    updateBody.activity_id = activity.body.activity_id;
   });
 
   it("should create a new session", async function () {
@@ -35,7 +49,6 @@ describe("sessions", function () {
       .send(body)
       .set("Accept", "application/json")
       .expect((res) => {
-        console.log(res.body);
         res.body.session_id = "some fixed id";
       });
 
@@ -52,6 +65,16 @@ describe("sessions", function () {
   it("should get all sessions", async function () {
     const response = await request(app)
       .get("/v1/sessions")
+      .set("Accept", "application/json");
+    expect(response.headers["content-type"]).toContain("application/json");
+    expect(response.status).toEqual(200);
+    expect(response.body[0].date).toEqual("2021-12-31T15:00:00.000Z");
+  });
+
+  it("should get all sessions filtered by query params", async function () {
+    const response = await request(app)
+      .get("/v1/sessions")
+      .query({ activity: "1", month: "1", year: "2022" })
       .set("Accept", "application/json");
     expect(response.headers["content-type"]).toContain("application/json");
     expect(response.status).toEqual(200);
@@ -100,12 +123,16 @@ describe("sessions", function () {
     // TODO: add all tables in setupFiles ?
     // TODO: find a way to make it secure
     await connection.execute("SET FOREIGN_KEY_CHECKS = 0");
+
     await connection.execute(
       // "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
-      "TRUNCATE TABLE sessions"
+      "DELETE FROM sessions"
+    );
+    await connection.execute(
+      // "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
+      "ALTER TABLE sessions AUTO_INCREMENT = 1;"
     );
     await connection.end();
-    console.log("... Test Ended");
   };
 
   afterAll(async () => {

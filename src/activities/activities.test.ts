@@ -6,9 +6,12 @@ const updateBody = { name: "activity_update", duration: "2", character_id: 1 };
 
 // TODO: add proper integration testing using docker and verdaccio
 describe("activities", function () {
+  beforeAll(async () => {
+    await request(app).post("/v1/characters").send({ name: "test", age: 20 });
+  });
+
   it("should get all activities", async function () {
     // Seed one user
-    await request(app).post("/v1/characters").send({ name: "test", age: 20 });
     await request(app).post("/v1/activities").send(body);
     const response = await request(app)
       .get("/v1/activities")
@@ -75,22 +78,21 @@ describe("activities", function () {
     expect(responseGet.body).toBeFalsy();
   });
 
+  // TODO: extract to utility functions
   const closeServer = async () => {
-    // server.close();
     // TODO: add all tables in setupFiles ?
     // TODO: find a way to make it secure
     await connection.execute("SET FOREIGN_KEY_CHECKS = 0");
     await connection.execute(
       // "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
-      "TRUNCATE TABLE activities"
+      "DELETE FROM activities"
+    );
+    await connection.execute(
+      // "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
+      "ALTER TABLE activities AUTO_INCREMENT = 1;"
     );
     await connection.end();
-    console.log("... Test Ended");
   };
-
-  // beforeAll(async () => {
-  //   server.close();
-  // });
 
   afterAll(async () => {
     await closeServer();

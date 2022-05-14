@@ -1,9 +1,19 @@
 import { Request, Response } from 'express';
+import { sessionsServiceFactory } from './sessions.service';
+import { SessionsQueryParams } from './sessions.types';
 
-export const sessionsControllerFactory = (service: any) => ({
-  findAll: async (_req: Request, res: Response) => {
+export const sessionsControllerFactory = (
+  service: ReturnType<typeof sessionsServiceFactory>
+) => ({
+  findAll: async (req: Request, res: Response) => {
     try {
-      const sessions = await service.findAll();
+      const { activity_id, month, year } = req.query || {};
+      const queryParams: SessionsQueryParams = {
+        activity_id: activity_id?.toString(),
+        month: month?.toString(),
+        year: year?.toString(),
+      };
+      const sessions = await service.findAll(queryParams);
       res.json(sessions);
     } catch (error) {
       console.error(error);

@@ -88,9 +88,12 @@ describe("characters", function () {
     await connection.execute("SET FOREIGN_KEY_CHECKS = 0");
     await connection.execute(
       // "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
-      "TRUNCATE TABLE characters"
+      "DELETE FROM characters"
+    );
+    await connection.execute(
+      // "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
+      "ALTER TABLE characters AUTO_INCREMENT = 1;"
     );
     await connection.end();
-    console.log("... Test Ended");
   });
 });

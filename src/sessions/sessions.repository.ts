@@ -1,17 +1,30 @@
 import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { sqlInclude } from '../helpers';
+import { SessionsQueryParams } from './sessions.types';
 
 const TABLE = `sessions`;
 const PRIMARY_KEY = `session_id`;
 
 export const sessionsRepositoryFactory = (pool: Pool) => ({
-  findAll: async (): Promise<any> => {
+  findAll: async (filters?: SessionsQueryParams): Promise<any> => {
     try {
+      // query
       const [rows] = (await pool.query(
-        `SELECT * FROM sessions`
+        `
+        SELECT *, MONTH(date) as sessionMonth, YEAR(date) as sessionYear
+        FROM sessions
+        WHERE activity_id = IFNULL(?, activity_id)
+        HAVING sessionMonth = IFNULL(?, sessionMonth) 
+        AND sessionYear = IFNULL(?, sessionYear)
+        `,
+        [
+          filters?.activity_id ?? null,
+          filters?.month ?? null,
+          filters?.year ?? null,
+        ]
       )) as RowDataPacket[][];
 
-      // get relation
+      // relation
       const rowsMap = rows.map(async (session) => {
         return sqlInclude({
           pool,
@@ -28,20 +41,22 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
       return error;
     }
   },
-  findOne: async (id: number) => {
+  findOne: async (id: string) => {
     try {
       const [rows] = (await pool.query(
         `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
         [id]
       )) as RowDataPacket[];
       const session = rows[0];
-      return sqlInclude({
-        pool,
-        item: session,
-        table: "activities",
-        primaryKey: "activity_id",
-        primaryKeyValue: session.activity_id,
-      });
+      return session
+        ? sqlInclude({
+            pool,
+            item: session,
+            table: "activities",
+            primaryKey: "activity_id",
+            primaryKeyValue: session.activity_id,
+          })
+        : undefined;
     } catch (error) {
       console.error(error);
       return error;
@@ -68,9 +83,9 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
         [
           body.duration,
           body.date,
-          body.note || null,
-          body.improvement || null,
-          body.proud || null,
+          body.note ?? null,
+          body.improvement ?? null,
+          body.proud ?? null,
           body.character_id,
           body.activity_id,
         ]
@@ -89,7 +104,7 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
       return error;
     }
   },
-  update: async (id: number, body: any) => {
+  update: async (id: string, body: any) => {
     try {
       if (
         !body.duration ||
@@ -125,7 +140,7 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
       return error;
     }
   },
-  delete: async (id: number) => {
+  delete: async (id: string) => {
     try {
       await pool.execute(`DELETE FROM ${TABLE} WHERE ${PRIMARY_KEY} = ?`, [id]);
     } catch (error) {

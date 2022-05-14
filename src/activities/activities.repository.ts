@@ -32,12 +32,13 @@ export const activitiesRepositoryFactory = (pool: Pool) => ({
       const activity = rows[0];
 
       // get relationship
+      // TODO: use sqlInclude ?
       const [sessions] = (await pool.query(
         `SELECT * FROM sessions s WHERE ${PRIMARY_KEY} = ?`,
         [id]
       )) as RowDataPacket[];
 
-      return { ...activity, sessions };
+      return activity ? { ...activity, sessions } : undefined;
     } catch (error) {
       console.error(error);
       return error;
@@ -46,7 +47,6 @@ export const activitiesRepositoryFactory = (pool: Pool) => ({
   // TODO: add proper types
   create: async (body: any) => {
     try {
-      console.log({ body });
       // TODO: add proper validation
       if (!body.name || !body.character_id || !body.duration) {
         throw new Error("body not defined");
@@ -96,7 +96,7 @@ export const activitiesRepositoryFactory = (pool: Pool) => ({
       return error;
     }
   },
-  delete: async (id: number) => {
+  delete: async (id: string) => {
     try {
       await pool.execute(`DELETE FROM ${TABLE} WHERE ${PRIMARY_KEY} = ?`, [id]);
     } catch (error) {
