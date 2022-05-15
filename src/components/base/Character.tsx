@@ -1,11 +1,11 @@
-import { FC } from 'react';
-import { useGetCharacterQuery } from '../../features/api/apiSlice';
+import { FC } from 'react'
+import { useGetCharacterQuery } from '../../features/api/apiSlice'
 
 export const Character: FC = () => {
-  const { data: character, isFetching, isLoading } = useGetCharacterQuery();
+  const { data: character, isFetching, isLoading } = useGetCharacterQuery()
 
   if (isFetching || isLoading) {
-    return <div>getting the character</div>;
+    return <div>getting the character</div>
   }
 
   return character ? (
@@ -30,5 +30,5 @@ export const Character: FC = () => {
         </li>
       </ul>
     </section>
-  ) : null;
-};
+  ) : null
+}

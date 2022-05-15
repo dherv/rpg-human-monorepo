@@ -1,17 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 
 // TODO: remove selected
-const initialState = { selected: null };
+const initialState = { selected: null }
 const activitiesSlice = createSlice({
-  name: "activities",
+  name: 'activities',
   initialState,
   reducers: {
     selectActivity(state, action) {
-      state.selected = action.payload;
+      state.selected = action.payload
     },
   },
-});
+})
 
-export const { selectActivity } = activitiesSlice.actions;
+export const { selectActivity } = activitiesSlice.actions
 
-export default activitiesSlice.reducer;
+export default activitiesSlice.reducer

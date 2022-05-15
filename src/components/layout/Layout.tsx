@@ -1,7 +1,7 @@
-import { FC, ReactElement } from 'react';
-import { Stack } from '@dherv/barbarian-with-style';
-import { Header } from './Header';
-import { Nav } from './Nav';
+import { FC, ReactElement } from 'react'
+import { Stack } from '@dherv/barbarian-with-style'
+import { Header } from './Header'
+import { Nav } from './Nav'
 
 export const Layout: FC<{ children: ReactElement }> = ({ children }) => {
   return (
@@ -11,5 +11,5 @@ export const Layout: FC<{ children: ReactElement }> = ({ children }) => {
       <main>{children}</main>
       <footer></footer>
     </Stack>
-  );
-};
+  )
+}

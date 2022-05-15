@@ -1,69 +1,52 @@
-import { FC, useEffect } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { DatePicker } from '@atlaskit/datetime-picker';
-import {
-  Button,
-  Form,
-  FormTitle,
-  Input,
-  TextArea,
-} from '@dherv/barbarian-with-style';
-import { skipToken } from '@reduxjs/toolkit/dist/query/react';
-import {
-  useAddNewSessionMutation,
-  useGetActivityQuery,
-} from '../../features/api/apiSlice';
-import { Loader } from './Loader';
+import { FC, useEffect } from 'react'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+// import { DatePicker } from '@atlaskit/datetime-picker';
+import { Button, Form, FormTitle, Input, TextArea } from '@dherv/barbarian-with-style'
+import { skipToken } from '@reduxjs/toolkit/dist/query/react'
+import { useGetActivityQuery } from '../../features/api/apiSlice'
+import { Loader } from './Loader'
 
 type Inputs = {
-  date: string;
-  duration: string;
-  note: string;
-  improvement: string;
-  proud: string;
-};
+  date: string
+  duration: string
+  note: string
+  improvement: string
+  proud: string
+}
 
 // TODO: rename ActivityAddSession
-export const SessionAddForm: FC<{ selectedActivityId?: number }> = ({
-  selectedActivityId,
-}) => {
+export const SessionAddForm: FC<{ selectedActivityId?: number }> = ({ selectedActivityId }) => {
   // Data
   const {
     data: activity,
     isFetching,
     isLoading,
-  } = useGetActivityQuery(selectedActivityId ?? skipToken);
-  const [addNewSession] = useAddNewSessionMutation();
+  } = useGetActivityQuery(selectedActivityId ?? skipToken)
+  // const [addNewSession] = useAddNewSessionMutation()
 
   // Form
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    control,
-    formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (typeof selectedActivityId === "undefined") {
-      return;
+  const { handleSubmit, setValue, control } = useForm<Inputs>()
+  const onSubmit: SubmitHandler<Inputs> = async () => {
+    if (typeof selectedActivityId === 'undefined') {
+      return
     }
-    const response = await addNewSession({
-      activity_id: selectedActivityId,
-      ...data,
-    });
-  };
+    // const response = await addNewSession({
+    //   activity_id: selectedActivityId,
+    //   ...data,
+    // })
+  }
 
   useEffect(() => {
-    const value = activity?.duration ? activity?.duration.toString() : "";
-    setValue("duration", value);
-  }, [activity]);
+    const value = activity?.duration ? activity?.duration.toString() : ''
+    setValue('duration', value)
+  }, [activity])
 
   if (isFetching || isLoading) {
-    return <Loader />;
+    return <Loader />
   }
 
   if (selectedActivityId === undefined) {
-    return null;
+    return null
   }
 
   return (
@@ -71,25 +54,25 @@ export const SessionAddForm: FC<{ selectedActivityId?: number }> = ({
       <Form onSubmit={handleSubmit(onSubmit)}>
         <FormTitle>update activiy - {activity?.name}</FormTitle>
         <div>
-          <label htmlFor="date" />
+          <label htmlFor='date' />
           <Controller
-            name="date"
+            name='date'
             control={control}
             rules={{ required: true }}
-            render={({ field }) => <DatePicker id="date" {...field} />}
+            render={({ field }) => <input id='date' {...field} />}
           />
 
           <Controller
-            name="duration"
+            name='duration'
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
               <Input
-                label="duration"
-                type="number"
+                label='duration'
+                type='number'
                 min={0}
-                id="duration"
-                placeholder="3"
+                id='duration'
+                placeholder='3'
                 {...field}
               ></Input>
             )}
@@ -98,14 +81,14 @@ export const SessionAddForm: FC<{ selectedActivityId?: number }> = ({
 
         <div>
           <Controller
-            name="note"
+            name='note'
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
               <TextArea
-                label="note"
-                id="note"
-                placeholder="note - today I dropped the mini - I was scared because people were watching but ended up dropping - difference with previous session = dropped alone compare to drop with people (courage+)"
+                label='note'
+                id='note'
+                placeholder='note - today I dropped the mini - I was scared because people were watching but ended up dropping - difference with previous session = dropped alone compare to drop with people (courage+)'
                 {...field}
               ></TextArea>
             )}
@@ -114,14 +97,14 @@ export const SessionAddForm: FC<{ selectedActivityId?: number }> = ({
 
         <div>
           <Controller
-            name="improvement"
+            name='improvement'
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
               <TextArea
-                label="improvement"
-                id="improvement"
-                placeholder="what did you improve"
+                label='improvement'
+                id='improvement'
+                placeholder='what did you improve'
                 {...field}
               ></TextArea>
             )}
@@ -130,14 +113,14 @@ export const SessionAddForm: FC<{ selectedActivityId?: number }> = ({
 
         <div>
           <Controller
-            name="proud"
+            name='proud'
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
               <TextArea
-                label="proud"
-                id="proud"
-                placeholder="what are you proud of during this session"
+                label='proud'
+                id='proud'
+                placeholder='what are you proud of during this session'
                 {...field}
               ></TextArea>
             )}
@@ -147,8 +130,8 @@ export const SessionAddForm: FC<{ selectedActivityId?: number }> = ({
         {/* TODO: add improve low skill like fear - procrastionation.... amount of points will add skill point ~120pts (trimestre = 1 point skill) for example- limit to 1pt per day */}
         {/* separate session info from extra rpg info - coombine with focal */}
         {/*  */}
-        <Button type="submit" text="log session"></Button>
+        <Button type='submit' text='log session'></Button>
       </Form>
     </>
-  );
-};
+  )
+}

@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+yarn typescript
+yarn test:commit
+yarn lint 
+yarn prettier

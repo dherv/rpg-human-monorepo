@@ -1,24 +1,23 @@
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC } from 'react'
 
 interface Props {
-  month?: number;
-  onChange: (month?: number) => void;
+  month?: number
+  onChange: (month?: number) => void
 }
 
 export const FilterMonth: FC<Props> = ({ month, onChange }) => {
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value ? Number(event.target.value) : undefined;
-    console.log({ value });
-    onChange(value);
-  };
+    const value = event.target.value ? Number(event.target.value) : undefined
+    onChange(value)
+  }
 
   return (
     <>
-      <label hidden htmlFor="month">
+      <label hidden htmlFor='month'>
         month
       </label>
-      <select id="month" value={month} name="month" onChange={handleChange}>
-        <option value={""}>all</option>
+      <select id='month' value={month} name='month' onChange={handleChange}>
+        <option value={''}>all</option>
         <option value={0}>January</option>
         <option value={1}>February</option>
         <option value={2}>March</option>
@@ -33,5 +32,5 @@ export const FilterMonth: FC<Props> = ({ month, onChange }) => {
         <option value={11}>December</option>
       </select>
     </>
-  );
-};
+  )
+}

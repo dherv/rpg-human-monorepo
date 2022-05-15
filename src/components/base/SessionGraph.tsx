@@ -1,5 +1,5 @@
-import { FC } from 'react';
+import { FC } from 'react'
 
 export const SessionGraph: FC = () => {
-  return <div>graph will be here</div>;
-};
+  return <div>graph will be here</div>
+}

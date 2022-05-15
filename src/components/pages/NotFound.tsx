@@ -1,5 +1,5 @@
-import { FC } from 'react';
+import { FC } from 'react'
 
 export const NotFound: FC = () => {
-  return <div>not found</div>;
-};
+  return <div>not found</div>
+}
