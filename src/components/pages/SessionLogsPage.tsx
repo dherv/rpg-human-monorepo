@@ -1,6 +1,6 @@
+import { List, Stack } from '@dherv/barbarian-with-style'
 import { getMonth, getYear } from 'date-fns'
 import { FC, useState } from 'react'
-import { List, Stack } from '@dherv/barbarian-with-style'
 import { useGetSessionsQuery } from '../../features/api/apiSlice'
 import { FilterActivities } from '../base/FilterActivities'
 import { FilterMonth } from '../base/FilterMonth'
@@ -22,7 +22,7 @@ export const SessionLogsPage: FC = () => {
           <FilterYear year={year} onChange={(year) => setYear(year)} />
           <FilterActivities activity={activity} onChange={(activity) => setActivity(activity)} />
         </>
-        <List>
+        <List data-cy='session-log-list'>
           {sessions?.map((session) => (
             <SessionLog key={session.sessionId} session={session} />
           ))}

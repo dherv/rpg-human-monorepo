@@ -1,6 +1,6 @@
+import { ListItem } from '@dherv/barbarian-with-style'
 import { format } from 'date-fns'
 import { FC, useState } from 'react'
-import { ListItem } from '@dherv/barbarian-with-style'
 import { Session } from '../../types/types'
 import { Dot } from '../base/Dot'
 import { SessionLogDetail } from './SessionLogDetail'
@@ -27,6 +27,7 @@ export const SessionLog: FC<Props> = ({ session }) => {
         key={session.sessionId}
         className='flex items-center justify-between p-2'
         onClick={handleShowContent}
+        data-cy='session-log'
       >
         <div className='flex items-center'>
           <Dot color='blue' />

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --port 8080",
     "test": "jest --watchAll",
     "test:commit": "jest",
     "typescript": "tsc --project tsconfig.json --noEmit",
@@ -14,10 +14,11 @@
     "prettier": "prettier src -check",
     "prettier:format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "lint-staged": "lint-staged --config .lintstagedrc.json",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "cypress:open": "cypress open",
+    "cypress:open:build": "yarn build && (yarn preview&) && cypress open"
   },
   "dependencies": {
-    "@dherv/barbarian-with-style": "^1.0.3",
     "@heroicons/react": "^1.0.6",
     "@reduxjs/toolkit": "^1.7.2",
     "date-fns": "^2.28.0",
@@ -33,6 +34,7 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
+    "@dherv/barbarian-with-style": "^1.0.4",
     "@swc/cli": "^0.1.55",
     "@swc/core": "^1.2.143",
     "@swc/jest": "^0.2.17",
@@ -45,6 +47,7 @@
     "@typescript-eslint/parser": "^5.23.0",
     "@vitejs/plugin-react": "^1.0.7",
     "autoprefixer": "^10.4.5",
+    "cypress": "^10.3.0",
     "eslint": "^8.15.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^2.7.1",
