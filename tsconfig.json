@@ -15,7 +15,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    // TODO: add cypress to allow uses cy.
     "types": ["jest"]
   },
   "include": ["src"],

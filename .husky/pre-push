@@ -2,6 +2,6 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 yarn typescript
-yarn test:commit
+yarn test
 yarn lint 
 yarn prettier

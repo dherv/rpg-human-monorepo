@@ -6,8 +6,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview --port 8080",
-    "test": "jest --watchAll",
-    "test:commit": "jest",
+    "test:watch": "jest --watchAll",
+    "test": "jest",
     "typescript": "tsc --project tsconfig.json --noEmit",
     "lint": "eslint src --color",
     "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json}'",
@@ -16,7 +16,8 @@
     "lint-staged": "lint-staged --config .lintstagedrc.json",
     "prepare": "husky install",
     "cypress:open": "cypress open",
-    "cypress:open:build": "yarn build && (yarn preview&) && cypress open"
+    "cypress:open:build": "yarn build && (yarn preview&) && cypress open",
+    "cypress:run": "yarn cypress run --browser chrome"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
@@ -71,6 +72,9 @@
     "workerDirectory": "public"
   },
   "jest": {
+    "roots": [
+      "./src"
+    ],
     "testEnvironment": "jsdom",
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupFilesAfterEnv.ts"
