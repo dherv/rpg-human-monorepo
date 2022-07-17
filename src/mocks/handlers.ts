@@ -40,10 +40,11 @@ export const handlers = [
   }),
 
   rest.post(`${url}/sessions`, (req, res, ctx) => {
-    const { body } = req
+    const body = req.body as Omit<Session, 'sessionId'>
     const newSession = {
-      id: sessionsMock.length + 1,
-      ...(body as Session),
+      sessionId: sessionsMock.length + 1,
+      ...body,
+      activity: activitiesMock.find((activity) => activity.activityId === body.activityId),
     } as Session
     sessionsMock.push(newSession)
     return res(ctx.status(200), ctx.json(newSession))

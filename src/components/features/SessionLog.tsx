@@ -1,8 +1,8 @@
-import { ListItem } from '@dherv/barbarian-with-style'
+import { ListItem } from '@dherv-co/barbarian-with-style'
 import { format } from 'date-fns'
 import { FC, useState } from 'react'
 import { Session } from '../../types/types'
-import { Dot } from '../base/Dot'
+import { DotText } from '../base/DotText'
 import { SessionLogDetail } from './SessionLogDetail'
 
 interface Props {
@@ -21,6 +21,8 @@ export const SessionLog: FC<Props> = ({ session }) => {
     return false
   })
 
+  // TODO: find a way to combine the list item to have p-2 on all (app StyledListItem extends the library one - provide a padding prop from lib?) / or a way to have a global padding
+
   return (
     <>
       <ListItem
@@ -29,10 +31,7 @@ export const SessionLog: FC<Props> = ({ session }) => {
         onClick={handleShowContent}
         data-cy='session-log'
       >
-        <div className='flex items-center'>
-          <Dot color='blue' />
-          <p className='mx-2'>{session.activity?.name}</p>
-        </div>
+        <DotText text={session.activity.name} color={session.activity.color} />
         <p>{format(new Date(session.date), 'MM/dd/yyyy')}</p>
       </ListItem>
       {showContent ? (
