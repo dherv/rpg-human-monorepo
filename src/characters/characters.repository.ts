@@ -6,7 +6,9 @@ const PRIMARY_KEY = `character_id`;
 export const charactersRepositoryFactory = (pool: Pool) => ({
   findAll: async (): Promise<any> => {
     try {
-      const [rows] = await pool.query(`SELECT * FROM characters`);
+      const [rows] = await pool.query(
+        `SELECT *, character_id as characterId FROM characters`
+      );
       return rows;
     } catch (error) {
       console.error(error);
@@ -16,7 +18,7 @@ export const charactersRepositoryFactory = (pool: Pool) => ({
   findOne: async (id: number) => {
     try {
       const [rows] = (await pool.query(
-        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
+        `SELECT *, character_id as characterId FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
         [id]
       )) as RowDataPacket[];
       const character = rows[0];
@@ -41,7 +43,7 @@ export const charactersRepositoryFactory = (pool: Pool) => ({
 
       // Get new item
       const [rows] = (await pool.query(
-        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ${insertId} LIMIT 1`
+        `SELECT *, character_id as characterId FROM ${TABLE} WHERE ${PRIMARY_KEY} = ${insertId} LIMIT 1`
       )) as RowDataPacket[];
       const character = rows[0];
 
@@ -64,7 +66,7 @@ export const charactersRepositoryFactory = (pool: Pool) => ({
 
       // GET new item
       const [rows] = (await pool.query(
-        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
+        `SELECT *, character_id as characterId FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
         [id]
       )) as RowDataPacket[];
       const character = rows[0];

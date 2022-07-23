@@ -1,9 +1,9 @@
 import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import { sqlInclude } from '../helpers';
 import { SessionsQueryParams } from './sessions.types';
 
 const TABLE = `sessions`;
 const PRIMARY_KEY = `session_id`;
+const SELECT_MAIN = `SELECT *, session_id as sessionId, activity_id as activityId, character_id as characterId`;
 
 export const sessionsRepositoryFactory = (pool: Pool) => ({
   findAll: async (filters?: SessionsQueryParams): Promise<any> => {
@@ -11,7 +11,7 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
       // query
       const [rows] = (await pool.query(
         `
-        SELECT *, MONTH(date) as sessionMonth, YEAR(date) as sessionYear
+        ${SELECT_MAIN}, MONTH(date) as sessionMonth, YEAR(date) as sessionYear
         FROM sessions
         WHERE activity_id = IFNULL(?, activity_id)
         HAVING sessionMonth = IFNULL(?, sessionMonth) 
@@ -26,13 +26,10 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
 
       // relation
       const rowsMap = rows.map(async (session) => {
-        return sqlInclude({
-          pool,
-          item: session,
-          table: "activities",
-          primaryKey: "activity_id",
-          primaryKeyValue: session.activity_id,
-        });
+        const [activities] = (await pool.query(
+          `SELECT *, activity_id as activityId, character_id as characterId FROM activities WHERE activity_id = ${session.activityId} LIMIT 1`
+        )) as RowDataPacket[];
+        return { ...session, activity: activities[0] };
       });
 
       return Promise.all(rowsMap);
@@ -44,19 +41,16 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
   findOne: async (id: string) => {
     try {
       const [rows] = (await pool.query(
-        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
+        `${SELECT_MAIN} FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
         [id]
       )) as RowDataPacket[];
       const session = rows[0];
-      return session
-        ? sqlInclude({
-            pool,
-            item: session,
-            table: "activities",
-            primaryKey: "activity_id",
-            primaryKeyValue: session.activity_id,
-          })
-        : undefined;
+
+      const [activities] = (await pool.query(
+        `SELECT *, activity_id as activityId, character_id as characterId FROM activities WHERE activity_id = ${session.activityId} LIMIT 1`
+      )) as RowDataPacket[];
+
+      return session ? { ...session, activity: activities[0] } : undefined;
     } catch (error) {
       console.error(error);
       return error;
@@ -94,7 +88,7 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
 
       // Get new item
       const [rows] = (await pool.query(
-        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ${insertId} LIMIT 1`
+        `${SELECT_MAIN} FROM ${TABLE} WHERE ${PRIMARY_KEY} = ${insertId} LIMIT 1`
       )) as RowDataPacket[];
       const session = rows[0];
 
@@ -130,7 +124,7 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
 
       // GET new item
       const [rows] = (await pool.query(
-        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
+        `${SELECT_MAIN} FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
         [id]
       )) as RowDataPacket[];
       const session = rows[0];

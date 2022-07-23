@@ -2,18 +2,20 @@ import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 
 const TABLE = `activities`;
 const PRIMARY_KEY = `activity_id`;
+const SELECT_MAIN = `SELECT *, activity_id as activityId`;
+const SELECT_MAIN_SESSION = `SELECT *, session_id as sessionId, activity_id as activityId, character_id as characterId`;
 
 export const activitiesRepositoryFactory = (pool: Pool) => ({
   findAll: async (): Promise<any> => {
     try {
       const [activities] = (await pool.query(
-        `SELECT * FROM activities`
+        `${SELECT_MAIN} FROM activities`
       )) as RowDataPacket[][];
       const result = activities.map(async (activity) => {
         // get relationship
         const [sessions] = (await pool.query(
-          `SELECT * FROM sessions s WHERE ${PRIMARY_KEY} = ?`,
-          [activity.activity_id]
+          `${SELECT_MAIN_SESSION} FROM sessions s WHERE ${PRIMARY_KEY} = ?`,
+          [activity.activityId]
         )) as RowDataPacket[];
         return { ...activity, sessions };
       });
@@ -26,15 +28,14 @@ export const activitiesRepositoryFactory = (pool: Pool) => ({
   findOne: async (id: number) => {
     try {
       const [rows] = (await pool.query(
-        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
+        `${SELECT_MAIN} FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
         [id]
       )) as RowDataPacket[];
       const activity = rows[0];
 
       // get relationship
-      // TODO: use sqlInclude ?
       const [sessions] = (await pool.query(
-        `SELECT * FROM sessions s WHERE ${PRIMARY_KEY} = ?`,
+        `${SELECT_MAIN_SESSION} FROM sessions s WHERE ${PRIMARY_KEY} = ?`,
         [id]
       )) as RowDataPacket[];
 
@@ -62,7 +63,7 @@ export const activitiesRepositoryFactory = (pool: Pool) => ({
 
       // Get new item
       const [rows] = (await pool.query(
-        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ${insertId} LIMIT 1`
+        `${SELECT_MAIN} FROM ${TABLE} WHERE ${PRIMARY_KEY} = ${insertId} LIMIT 1`
       )) as RowDataPacket[];
       const activity = rows[0];
 
@@ -86,7 +87,7 @@ export const activitiesRepositoryFactory = (pool: Pool) => ({
 
       // GET new item
       const [rows] = (await pool.query(
-        `SELECT * FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
+        `${SELECT_MAIN} FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
         [id]
       )) as RowDataPacket[];
       const activity = rows[0];

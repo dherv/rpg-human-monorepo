@@ -7,6 +7,7 @@ interface Include<T, K extends keyof T> {
   primaryKeyValue: number;
   item: T;
 }
+// TODO: to remove
 export const sqlInclude = async <T, K extends keyof T>({
   pool,
   item,
