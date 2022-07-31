@@ -1,5 +1,5 @@
-import { sessionsRepositoryFactory } from './sessions.repository';
-import { SessionsQueryParams } from './sessions.types';
+import { sessionsRepositoryFactory } from "./sessions.repository";
+import { SessionsQueryParams } from "./sessions.types";
 
 export const sessionsServiceFactory = (
   repository: ReturnType<typeof sessionsRepositoryFactory>
@@ -38,7 +38,8 @@ export const sessionsServiceFactory = (
   },
   delete: async (id: string) => {
     try {
-      return await repository.delete(id);
+      const result = await repository.delete(id);
+      return result;
     } catch (error) {
       console.error(error);
       return error;

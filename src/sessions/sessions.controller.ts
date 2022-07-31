@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
-import { sessionsServiceFactory } from './sessions.service';
-import { SessionsQueryParams } from './sessions.types';
+import { Request, Response } from "express";
+import { sessionsServiceFactory } from "./sessions.service";
+import { SessionsQueryParams } from "./sessions.types";
 
 export const sessionsControllerFactory = (
   service: ReturnType<typeof sessionsServiceFactory>

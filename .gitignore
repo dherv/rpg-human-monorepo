@@ -1,9 +1,9 @@
 # Env
 
-.env
+.env*
 
 # Folders
 node_modules
 
 # Liquibase
-migrations/liquibase.properties
+migrations/liquibase.properties*

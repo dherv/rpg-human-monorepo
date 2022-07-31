@@ -1,5 +1,5 @@
-import request from 'supertest';
-import { app, connection } from '../';
+import request from "supertest";
+import { app, connection } from "../";
 
 const body = { name: "activity", duration: "1", character_id: 1 };
 const updateBody = { name: "activity_update", duration: "2", character_id: 1 };
@@ -82,15 +82,15 @@ describe("activities", function () {
   const closeServer = async () => {
     // TODO: add all tables in setupFiles ?
     // TODO: find a way to make it secure
-    await connection.execute("SET FOREIGN_KEY_CHECKS = 0");
+    // await connection.execute("SET FOREIGN_KEY_CHECKS = 0");
     await connection.execute(
-      // "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
-      "DELETE FROM activities"
+      "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
+      // "DELETE FROM activities"
     );
-    await connection.execute(
-      // "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
-      "ALTER TABLE activities AUTO_INCREMENT = 1;"
-    );
+    // await connection.execute(
+    //   // "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
+    //   "ALTER TABLE activities AUTO_INCREMENT = 1;"
+    // );
     await connection.end();
   };
 

@@ -1,5 +1,5 @@
-import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import { SessionsQueryParams } from './sessions.types';
+import { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
+import { SessionsQueryParams } from "./sessions.types";
 
 const TABLE = `sessions`;
 const PRIMARY_KEY = `session_id`;
@@ -46,11 +46,13 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
       )) as RowDataPacket[];
       const session = rows[0];
 
-      const [activities] = (await pool.query(
-        `SELECT *, activity_id as activityId, character_id as characterId FROM activities WHERE activity_id = ${session.activityId} LIMIT 1`
-      )) as RowDataPacket[];
-
-      return session ? { ...session, activity: activities[0] } : undefined;
+      if (session) {
+        const [activities] = (await pool.query(
+          `SELECT *, activity_id as activityId, character_id as characterId FROM activities WHERE activity_id = ${session.activityId} LIMIT 1`
+        )) as RowDataPacket[];
+        return { ...session, activity: activities[0] };
+      }
+      return undefined;
     } catch (error) {
       console.error(error);
       return error;

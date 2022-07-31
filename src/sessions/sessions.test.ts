@@ -1,5 +1,5 @@
-import request from 'supertest';
-import { app, connection } from '../';
+import request from "supertest";
+import { app, connection } from "../";
 
 const body = {
   duration: "1",
@@ -18,6 +18,8 @@ const updateBody = {
   character_id: 1,
   activity_id: 1,
 };
+
+const formattedDate = "2022-01-01T00:00:00.000Z";
 
 // TODO: add proper integration testing using docker and verdaccio
 
@@ -57,7 +59,7 @@ describe("sessions", function () {
     expect(response.body).toEqual(
       expect.objectContaining({
         session_id: "some fixed id",
-        date: "2021-12-31T15:00:00.000Z",
+        date: formattedDate,
       })
     );
   });
@@ -68,7 +70,7 @@ describe("sessions", function () {
       .set("Accept", "application/json");
     expect(response.headers["content-type"]).toContain("application/json");
     expect(response.status).toEqual(200);
-    expect(response.body[0].date).toEqual("2021-12-31T15:00:00.000Z");
+    expect(response.body[0].date).toEqual(formattedDate);
   });
 
   it("should get all sessions filtered by query params", async function () {
@@ -78,7 +80,7 @@ describe("sessions", function () {
       .set("Accept", "application/json");
     expect(response.headers["content-type"]).toContain("application/json");
     expect(response.status).toEqual(200);
-    expect(response.body[0].date).toEqual("2021-12-31T15:00:00.000Z");
+    expect(response.body[0].date).toEqual(formattedDate);
   });
 
   it("should get one session", async () => {
@@ -88,7 +90,7 @@ describe("sessions", function () {
       .set("Accept", "application/json");
     expect(response.headers["content-type"]).toContain("application/json");
     expect(response.status).toEqual(200);
-    expect(response.body.date).toEqual("2021-12-31T15:00:00.000Z");
+    expect(response.body.date).toEqual(formattedDate);
   });
 
   it("should update one session", async () => {
@@ -104,9 +106,11 @@ describe("sessions", function () {
 
   it("should delete one session", async () => {
     const createResponse = await request(app).post("/v1/sessions").send(body);
+
     const response = await request(app)
       .delete(`/v1/sessions/${createResponse.body.session_id}`)
       .set("Accept", "application/json");
+
     expect(response.headers["content-type"]).toContain("application/json");
     expect(response.status).toEqual(200);
     expect(response.body).toBeFalsy();
@@ -115,6 +119,7 @@ describe("sessions", function () {
     const responseGet = await request(app)
       .get(`/v1/sessions/${response.body.session_id}`)
       .set("Accept", "application/json");
+
     expect(responseGet.body).toBeFalsy();
   });
 
@@ -122,16 +127,16 @@ describe("sessions", function () {
   const closeServer = async () => {
     // TODO: add all tables in setupFiles ?
     // TODO: find a way to make it secure
-    await connection.execute("SET FOREIGN_KEY_CHECKS = 0");
+    // await connection.execute("SET FOREIGN_KEY_CHECKS = 0");
 
     await connection.execute(
-      // "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
-      "DELETE FROM sessions"
+      "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
+      // "DELETE FROM sessions"
     );
-    await connection.execute(
-      // "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
-      "ALTER TABLE sessions AUTO_INCREMENT = 1;"
-    );
+    // await connection.execute(
+    //   // "SELECT Concat('TRUNCATE TABLE ', TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES"
+    //   "ALTER TABLE sessions AUTO_INCREMENT = 1;"
+    // );
     await connection.end();
   };
 
