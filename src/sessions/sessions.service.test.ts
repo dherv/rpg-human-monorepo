@@ -1,5 +1,5 @@
-import { mockRepository } from '../../mocks/mocks';
-import { sessionsServiceFactory } from './sessions.service';
+import { mockRepository } from "../mocks/mocks";
+import { sessionsServiceFactory } from "./sessions.service";
 
 afterEach(() => jest.restoreAllMocks());
 

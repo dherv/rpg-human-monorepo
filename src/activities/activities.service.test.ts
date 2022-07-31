@@ -1,5 +1,5 @@
-import { mockRepository } from '../../mocks/mocks';
-import { activitiesServiceFactory } from './activities.service';
+import { mockRepository } from "../mocks/mocks";
+import { activitiesServiceFactory } from "./activities.service";
 
 test("should get all activities from repository and send it as json response", async () => {
   await activitiesServiceFactory(mockRepository).findAll();
@@ -30,6 +30,6 @@ test("should update a activity from repository and send it as json response", as
 });
 
 test("should delete a activity from repository and send it as json response", async () => {
-  await activitiesServiceFactory(mockRepository).delete(1);
+  await activitiesServiceFactory(mockRepository).delete("1");
   expect(mockRepository.delete).toHaveBeenCalledWith(1);
 });

@@ -1,5 +1,5 @@
-import { mockRequest, mockResponse, mockService } from '../../mocks/mocks';
-import { activitiesControllerFactory } from './activities.controller';
+import { mockRequest, mockResponse, mockService } from "../mocks/mocks";
+import { activitiesControllerFactory } from "./activities.controller";
 
 test("should get all activities from service and send it as json response", async () => {
   await activitiesControllerFactory(mockService).findAll(

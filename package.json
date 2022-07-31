@@ -5,6 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
     "test": "jest",
     "test:int": "sh ./scripts/run-integration-tests.sh"
   },

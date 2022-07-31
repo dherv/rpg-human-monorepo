@@ -1,5 +1,5 @@
-import { mockRequest, mockResponse, mockService } from '../../mocks/mocks';
-import { charactersControllerFactory } from './characters.controller';
+import { mockRequest, mockResponse, mockService } from "../mocks/mocks";
+import { charactersControllerFactory } from "./characters.controller";
 
 test("should get all characters from service and send it as json response", async () => {
   await charactersControllerFactory(mockService).findAll(

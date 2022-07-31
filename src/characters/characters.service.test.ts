@@ -1,5 +1,5 @@
-import { mockRepository } from '../../mocks/mocks';
-import { charactersServiceFactory } from './characters.service';
+import { mockRepository } from "../mocks/mocks";
+import { charactersServiceFactory } from "./characters.service";
 
 test("should get all characters from repository and send it as json response", async () => {
   await charactersServiceFactory(mockRepository).findAll();
