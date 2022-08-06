@@ -35,7 +35,7 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
-    "@dherv/barbarian-with-style": "^1.0.4",
+    "@dherv-co/barbarian-with-style": "^1.0.4",
     "@swc/cli": "^0.1.55",
     "@swc/core": "^1.2.143",
     "@swc/jest": "^0.2.17",

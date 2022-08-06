@@ -12,5 +12,6 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev"
-  }
+  },
+  "private": true
 }
