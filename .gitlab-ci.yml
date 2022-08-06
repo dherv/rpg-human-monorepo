@@ -9,7 +9,7 @@ cache:
   paths:
     - cache/Cypress
     - node_modules
-    - dist
+    - apps/client/dist
 
 ## Set environment variables for folders in "cache" job settings for npm modules and Cypress binary
 variables:
@@ -53,9 +53,9 @@ install:
         curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "success", "description": "succeeded.", "context": "gitlab-install"}' $GITHUB_REPO_URL || true
       fi
     - >
-      if [ $CI_JOB_STATUS == 'failure' ]; then
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-install"}' $GITHUB_REPO_URL || true
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+      if [ $CI_JOB_STATUS == 'failed' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-install"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
       fi
   artifacts:
     untracked: false
@@ -83,9 +83,9 @@ linter:
         curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "success", "description": "succeeded.", "context": "gitlab-linter"}' $GITHUB_REPO_URL || true
       fi
     - >
-      if [ $CI_JOB_STATUS == 'failure' ]; then
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-linter"}' $GITHUB_REPO_URL || true
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+      if [ $CI_JOB_STATUS == 'failed' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-linter"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
       fi
 
 unit:
@@ -108,9 +108,9 @@ unit:
         curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "success", "description": "succeeded.", "context": "gitlab-unit"}' $GITHUB_REPO_URL || true
       fi
     - >
-      if [ $CI_JOB_STATUS == 'failure' ]; then
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-unit"}' $GITHUB_REPO_URL || true
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+      if [ $CI_JOB_STATUS == 'failed' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-unit"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
       fi
 
 typescript:
@@ -133,9 +133,9 @@ typescript:
         curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "success", "description": "succeeded.", "context": "gitlab-typescript"}' $GITHUB_REPO_URL || true
       fi
     - >
-      if [ $CI_JOB_STATUS == 'failure' ]; then
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-typescript"}' $GITHUB_REPO_URL || true
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+      if [ $CI_JOB_STATUS == 'failed' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-typescript"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
       fi
 
 cypress test:
@@ -151,7 +151,7 @@ cypress test:
       $GITHUB_REPO_URL || true
   script:
     - npm run preview &
-    - npm run cypress --record --key 295871b0-fbab-4338-abd8-9320895a84f0 --browser chrome --group "UI - Chrome"
+    - npm run cypress:run:build --record --key 295871b0-fbab-4338-abd8-9320895a84f0 --browser chrome --group "UI - Chrome"
   after_script:
     - echo $CI_JOB_STATUS
     - >
@@ -159,9 +159,9 @@ cypress test:
         curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "success", "description": "succeeded.", "context": "gitlab-cypress"}' $GITHUB_REPO_URL || true
       fi
     - >
-      if [ $CI_JOB_STATUS == 'failure' ]; then
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-cypress"}' $GITHUB_REPO_URL || true
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+      if [ $CI_JOB_STATUS == 'failed' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-cypress"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
       fi
   artifacts:
     when: always

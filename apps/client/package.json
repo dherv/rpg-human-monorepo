@@ -15,7 +15,8 @@
     "prettier:format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "cypress:open": "cypress open",
     "cypress:open:build": "yarn build && (yarn preview&) && cypress open",
-    "cypress:run": "yarn cypress run --browser chrome"
+    "cypress:run": "yarn cypress run --browser chrome",
+    "cypress:run:build": "yarn build && (yarn preview&) && yarn cypress run --browser chrome"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
