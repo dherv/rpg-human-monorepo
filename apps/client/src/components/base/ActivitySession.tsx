@@ -1,5 +1,5 @@
-import { List, ListItem } from '@dherv-co/barbarian-with-style'
 import { FC } from 'react'
+import { List, ListItem } from '@dherv/barbarian-with-style'
 import { useGetSessionsByActivityQuery } from '../../features/api/apiSlice'
 import { Loader } from './Loader'
 

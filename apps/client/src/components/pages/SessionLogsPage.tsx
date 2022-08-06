@@ -1,4 +1,4 @@
-import { List, Stack } from '@dherv-co/barbarian-with-style'
+import { List, Stack } from '@dherv/barbarian-with-style'
 import { getMonth, getYear } from 'date-fns'
 import { FC, useState } from 'react'
 import { useGetSessionsQuery } from '../../features/api/apiSlice'
