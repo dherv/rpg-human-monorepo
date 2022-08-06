@@ -61,7 +61,7 @@ install:
     untracked: false
     expire_in: 30 days
     paths:
-      - dist
+      - apps/client/dist
 
 linter:
   image: node:16-alpine
