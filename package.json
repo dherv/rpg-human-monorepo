@@ -21,7 +21,7 @@
     "prettier": "turbo run prettier --filter=client",
     "preview": "turbo run preview --filter=client",
     "cypress:open:build": "turbo run cypress:open:build --filter=client",
-    "cypress:run:build": "turbo run cypress:run:build --filter=client",
+    "cypress:run": "turbo run cypress:run --filter=client",
     "lint-staged": "lint-staged --config .lintstagedrc.json",
     "prepare": "husky install"
   },
