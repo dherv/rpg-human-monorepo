@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 // import { DatePicker } from '@atlaskit/datetime-picker';
-import { Button, Form, FormTitle, Input, TextArea } from '@dherv/barbarian-with-style'
+import { Button, Form, FormTitle, Input, TextArea } from '@dherv-co/barbarian-with-style'
 import { skipToken } from '@reduxjs/toolkit/dist/query/react'
 import { useGetActivityQuery } from '../../features/api/apiSlice'
 import { Loader } from './Loader'

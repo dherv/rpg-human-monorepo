@@ -1,5 +1,5 @@
+import { Stack } from '@dherv-co/barbarian-with-style'
 import { FC, ReactElement } from 'react'
-import { Stack } from '@dherv/barbarian-with-style'
 import { Header } from './Header'
 import { Nav } from './Nav'
 

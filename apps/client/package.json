@@ -14,7 +14,7 @@
     "prettier": "prettier src -check",
     "prettier:format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "lint-staged": "lint-staged --config .lintstagedrc.json",
-    "prepare": "husky install",
+    "prepare": "cd ../.. && husky install apps/client/.husky",
     "cypress:open": "cypress open",
     "cypress:open:build": "yarn build && (yarn preview&) && cypress open",
     "cypress:run": "yarn cypress run --browser chrome"

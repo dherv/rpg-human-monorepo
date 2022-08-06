@@ -1,4 +1,4 @@
-import { ListItem } from '@dherv/barbarian-with-style'
+import { ListItem } from '@dherv-co/barbarian-with-style'
 import { format } from 'date-fns'
 import { FC, useState } from 'react'
 import { Session } from '../../types/types'

@@ -1,5 +1,5 @@
+import { List, ListItem, Title } from '@dherv-co/barbarian-with-style'
 import { FC } from 'react'
-import { List, ListItem, Title } from '@dherv/barbarian-with-style'
 import { useGetActivitiesQuery } from '../../features/api/apiSlice'
 
 export const Activities: FC<{ onClick: (activityId: number) => void }> = ({ onClick }) => {
