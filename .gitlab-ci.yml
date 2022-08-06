@@ -151,7 +151,7 @@ cypress test:
       $GITHUB_REPO_URL || true
   script:
     - npm run preview &
-    - npm run cypress run --record --key 295871b0-fbab-4338-abd8-9320895a84f0 --browser chrome --group "UI - Chrome"
+    - npm run cypress --record --key 295871b0-fbab-4338-abd8-9320895a84f0 --browser chrome --group "UI - Chrome"
   after_script:
     - echo $CI_JOB_STATUS
     - >
