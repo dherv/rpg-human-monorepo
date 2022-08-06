@@ -54,8 +54,8 @@ install:
       fi
     - >
       if [ $CI_JOB_STATUS == 'failed' ]; then
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-install"}' $GITHUB_REPO_URL || true
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-install"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
       fi
   artifacts:
     untracked: false
@@ -84,8 +84,8 @@ linter:
       fi
     - >
       if [ $CI_JOB_STATUS == 'failed' ]; then
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-linter"}' $GITHUB_REPO_URL || true
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-linter"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
       fi
 
 unit:
@@ -109,8 +109,8 @@ unit:
       fi
     - >
       if [ $CI_JOB_STATUS == 'failed' ]; then
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-unit"}' $GITHUB_REPO_URL || true
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-unit"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
       fi
 
 typescript:
@@ -134,8 +134,8 @@ typescript:
       fi
     - >
       if [ $CI_JOB_STATUS == 'failed' ]; then
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-typescript"}' $GITHUB_REPO_URL || true
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-typescript"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
       fi
 
 cypress test:
@@ -160,8 +160,8 @@ cypress test:
       fi
     - >
       if [ $CI_JOB_STATUS == 'failed' ]; then
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-cypress"}' $GITHUB_REPO_URL || true
-        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failed", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-cypress"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
       fi
   artifacts:
     when: always
