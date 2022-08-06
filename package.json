@@ -9,7 +9,7 @@
   "devDependencies": {
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
-    "turbo": "^1.4.2"
+    "turbo": "^1.2.3"
   },
   "scripts": {
     "build": "turbo run build --filter=client",
@@ -18,6 +18,8 @@
     "typescript": "turbo run typescript --filter=client",
     "lint": "turbo run lint --filter=client",
     "prettier": "turbo run prettier --filter=client",
+    "preview": "turbo run preview --filter=client",
+    "cypress": "turbo run cypress:open:build --filter=client",
     "lint-staged": "lint-staged --config .lintstagedrc.json",
     "prepare": "husky install"
   },

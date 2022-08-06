@@ -9,6 +9,7 @@
     "typescript": {},
     "preview": {},
     "cypress": {},
+    "cypress:open:build": {},
     "prettier": {}
   }
 }
