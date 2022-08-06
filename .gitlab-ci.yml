@@ -15,7 +15,7 @@ cache:
 variables:
   npm_config_cache: "$CI_PROJECT_DIR/.npm"
   CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
-  GITHUB_REPO_URL: "https://api.github.com/repos/dherv/rpg-human-monorepo/statuses/$CI_BUILD_REF"
+  GITHUB_REPO_URL: "https://api.github.com/repos/dherv-co/rpg-human-monorepo/statuses/$CI_BUILD_REF"
 
 start:
   image: node:16-alpine
