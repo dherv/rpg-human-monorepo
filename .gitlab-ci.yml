@@ -68,6 +68,7 @@ linter:
   stage: check
   before_script:
     - apk --no-cache add curl
+    - apk update && apk add git
     - >-
       curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN"
       -X POST
@@ -92,6 +93,7 @@ unit:
   stage: check
   before_script:
     - apk --no-cache add curl
+    - apk update && apk add git
     - >-
       curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN"
       -X POST
@@ -116,6 +118,7 @@ typescript:
   stage: check
   before_script:
     - apk --no-cache add curl
+    - apk update && apk add git
     - >-
       curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN"
       -X POST
@@ -140,6 +143,7 @@ cypress test:
   stage: test
   before_script:
     - apt-get install curl
+    - apk update && apk add git
     - >-
       curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN"
       -X POST
