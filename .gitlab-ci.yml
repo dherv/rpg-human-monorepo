@@ -9,7 +9,7 @@ cache:
   paths:
     - cache/Cypress
     - node_modules
-    - apps/client/dist
+    - dist
 
 ## Set environment variables for folders in "cache" job settings for npm modules and Cypress binary
 variables:
@@ -44,7 +44,7 @@ install:
     - touch ~/.npmrc
     - echo $GITHUB_PKG_REGISTRY >> ~/.npmrc
     - echo $GITHUB_PKG_TOKEN >> ~/.npmrc
-    - npm install
+    - npm ci
     - npm run build
   after_script:
     - echo $CI_JOB_STATUS
@@ -61,7 +61,7 @@ install:
     untracked: false
     expire_in: 30 days
     paths:
-      - apps/client/dist
+      - dist
 
 linter:
   image: node:16-alpine
