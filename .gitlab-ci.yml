@@ -44,7 +44,7 @@ install:
     - touch ~/.npmrc
     - echo $GITHUB_PKG_REGISTRY >> ~/.npmrc
     - echo $GITHUB_PKG_TOKEN >> ~/.npmrc
-    - npm ci
+    - npm install
     - npm run build
   after_script:
     - echo $CI_JOB_STATUS
