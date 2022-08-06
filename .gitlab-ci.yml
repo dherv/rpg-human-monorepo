@@ -143,7 +143,7 @@ cypress test:
   stage: test
   before_script:
     - apt-get install curl
-    - apk update && apk add git
+    - apt-get update && apt-get install git
     - >-
       curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN"
       -X POST
