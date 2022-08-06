@@ -1,0 +1,176 @@
+stages:
+  - ci start
+  - install
+  - check
+  - test
+  - ci end
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - cache/Cypress
+    - node_modules
+    - dist
+
+## Set environment variables for folders in "cache" job settings for npm modules and Cypress binary
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+  GITHUB_REPO_URL: "https://api.github.com/repos/dherv/rpg-human-monorepo/statuses/$CI_BUILD_REF"
+
+start:
+  image: node:16-alpine
+  stage: ci start
+  script:
+    - apk --no-cache add curl
+    - >
+      curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN"
+      -X POST
+      --data '{"state": "pending", "description": "Gitlab-CI is building the commit", "context": "gitlab-ci"}'
+      $GITHUB_REPO_URL || true
+
+install:
+  image: node:16-alpine
+  stage: install
+  before_script:
+    - apk --no-cache add curl
+    - >-
+      curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN"
+      -X POST
+      --data '{"state": "pending", "description": "Gitlab-CI is building the commit", "context": "gitlab-install"}'
+      $GITHUB_REPO_URL || true
+  script:
+    - touch ~/.npmrc
+    - echo $GITHUB_PKG_REGISTRY >> ~/.npmrc
+    - echo $GITHUB_PKG_TOKEN >> ~/.npmrc
+    - yarn install --frozen-lockfile
+    - yarn build
+  after_script:
+    - echo $CI_JOB_STATUS
+    - >
+      if [ $CI_JOB_STATUS == 'success' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "success", "description": "succeeded.", "context": "gitlab-install"}' $GITHUB_REPO_URL || true
+      fi
+    - >
+      if [ $CI_JOB_STATUS == 'failure' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-install"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+      fi
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - dist
+
+linter:
+  image: node:16-alpine
+  stage: check
+  before_script:
+    - apk --no-cache add curl
+    - >-
+      curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN"
+      -X POST
+      --data '{"state": "pending", "description": "Gitlab-CI is building the commit", "context": "gitlab-linter"}'
+      $GITHUB_REPO_URL || true
+  script:
+    - yarn lint
+  after_script:
+    - echo $CI_JOB_STATUS
+    - >
+      if [ $CI_JOB_STATUS == 'success' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "success", "description": "succeeded.", "context": "gitlab-linter"}' $GITHUB_REPO_URL || true
+      fi
+    - >
+      if [ $CI_JOB_STATUS == 'failure' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-linter"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+      fi
+
+unit:
+  image: node:16-alpine
+  stage: check
+  before_script:
+    - apk --no-cache add curl
+    - >-
+      curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN"
+      -X POST
+      --data '{"state": "pending", "description": "Gitlab-CI is building the commit", "context": "gitlab-unit"}'
+      $GITHUB_REPO_URL || true
+  script:
+    - yarn test
+  after_script:
+    - echo $CI_JOB_STATUS
+    - >
+      if [ $CI_JOB_STATUS == 'success' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "success", "description": "succeeded.", "context": "gitlab-unit"}' $GITHUB_REPO_URL || true
+      fi
+    - >
+      if [ $CI_JOB_STATUS == 'failure' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-unit"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+      fi
+
+typescript:
+  image: node:16-alpine
+  stage: check
+  before_script:
+    - apk --no-cache add curl
+    - >-
+      curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN"
+      -X POST
+      --data '{"state": "pending", "description": "Gitlab-CI is building the commit", "context": "gitlab-typescript"}'
+      $GITHUB_REPO_URL || true
+  script:
+    - yarn typescript
+  after_script:
+    - echo $CI_JOB_STATUS
+    - >
+      if [ $CI_JOB_STATUS == 'success' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "success", "description": "succeeded.", "context": "gitlab-typescript"}' $GITHUB_REPO_URL || true
+      fi
+    - >
+      if [ $CI_JOB_STATUS == 'failure' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-typescript"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+      fi
+
+cypress test:
+  image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
+  stage: test
+  before_script:
+    - apt-get install curl
+    - >-
+      curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN"
+      -X POST
+      --data '{"state": "pending", "description": "Gitlab-CI is building the commit", "context": "gitlab-cypress"}'
+      $GITHUB_REPO_URL || true
+  script:
+    - yarn preview &
+    - yarn cypress run --record --key 295871b0-fbab-4338-abd8-9320895a84f0 --browser chrome --group "UI - Chrome"
+  after_script:
+    - echo $CI_JOB_STATUS
+    - >
+      if [ $CI_JOB_STATUS == 'success' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "success", "description": "succeeded.", "context": "gitlab-cypress"}' $GITHUB_REPO_URL || true
+      fi
+    - >
+      if [ $CI_JOB_STATUS == 'failure' ]; then
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-cypress"}' $GITHUB_REPO_URL || true
+        curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" -X POST --data '{"state": "failure", "description": "failed.", "context": "gitlab-ci"}' $GITHUB_REPO_URL || true
+      fi
+  artifacts:
+    when: always
+    paths:
+      - cypress/videos/**/*.mp4
+      - cypress/screenshots/**/*.png
+    expire_in: 1 day
+
+end:
+  image: node:16-alpine
+  stage: ci end
+  script:
+    - apk --no-cache add curl
+    - >
+      curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN" 
+      -X POST 
+      --data '{"state": "success", "description": "succeeded.", "context": "gitlab-ci"}' 
+      $GITHUB_REPO_URL || true
