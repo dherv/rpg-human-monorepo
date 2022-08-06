@@ -44,7 +44,7 @@ install:
     - echo $GITHUB_PKG_REGISTRY >> ~/.npmrc
     - echo $GITHUB_PKG_TOKEN >> ~/.npmrc
     - npm ci
-    - npm run build --fitler=client
+    - npm run build --filter=client
   after_script:
     - echo $CI_JOB_STATUS
     - >
