@@ -22,6 +22,7 @@ start:
   stage: ci start
   script:
     - apk --no-cache add curl
+    - echo $GITHUB_REPO_URL
     - >
       curl -s -H "Authorization: token $GITHUB_STATUS_TOKEN"
       -X POST
