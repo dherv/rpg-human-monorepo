@@ -2,12 +2,12 @@ import { format } from 'date-fns'
 import { Activity, Session } from '../types/types'
 
 export const activitiesMock: Activity[] = [
-  { activityId: 1, name: 'skateboard', duration: 1 },
-  { activityId: 2, name: 'surf', duration: 2 },
-  { activityId: 3, name: 'code', duration: 4 },
+  { activityId: 1, name: 'skateboard', duration: 1, color: '#14b8a6' },
+  { activityId: 2, name: 'surf', duration: 2, color: '#0ea5e9' },
+  { activityId: 3, name: 'code', duration: 4, color: '#ec4899' },
 ]
 
-export const sessionsMock: Session[] = [
+export const sessionsMock = [
   {
     sessionId: 1,
     date: format(new Date(), 'yyyy/MM/dd'),
@@ -31,7 +31,7 @@ export const sessionsMock: Session[] = [
     ...session,
     activity: activitiesMock.find((activity) => session.activityId === activity.activityId),
   }
-})
+}) as Session[]
 
 export const characterMock = {
   id: 1,

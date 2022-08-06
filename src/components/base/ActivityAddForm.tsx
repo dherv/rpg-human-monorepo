@@ -1,4 +1,4 @@
-import { Button, Form, FormTitle, Input } from '@dherv/barbarian-with-style'
+import { Button, Form, FormTitle, Input } from '@dherv-co/barbarian-with-style'
 import { FormEvent, useState } from 'react'
 import { useAddNewActivityMutation } from '../../features/api/apiSlice'
 

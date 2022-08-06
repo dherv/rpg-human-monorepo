@@ -1,7 +1,7 @@
-import { format } from 'date-fns'
-import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { format } from 'date-fns'
+import { Provider } from 'react-redux'
 import { store } from '../../app/store'
 import { SessionLogsPage } from './SessionLogsPage'
 
@@ -19,7 +19,7 @@ describe('SessionLogs component', () => {
 
   it('should display the right activity color dot', async () => {
     const color = await screen.findAllByTitle('activity color')
-    expect(color[0].nextSibling).toHaveAttribute('fill', 'blue')
+    expect(color[0].nextSibling).toHaveAttribute('fill', '#14b8a6')
   })
 
   it('should display the date formatted properly', async () => {

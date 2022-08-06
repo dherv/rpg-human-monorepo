@@ -45,7 +45,7 @@ export const apiSlice = createApi({
     addNewSession: builder.mutation<
       Session,
       {
-        activity_id: number
+        activityId: number
         date: string
         duration: string
         note: string

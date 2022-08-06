@@ -1,32 +1,34 @@
+import { List, ListItem } from '@dherv-co/barbarian-with-style'
 import { FC } from 'react'
-import { List, ListItem, Title } from '@dherv/barbarian-with-style'
 import { useGetActivitiesQuery } from '../../features/api/apiSlice'
+import { DotText } from './DotText'
 
 export const Activities: FC<{ onClick: (activityId: number) => void }> = ({ onClick }) => {
-  const { data: activities, isLoading, isError, error, isSuccess } = useGetActivitiesQuery()
+  const { data: activities, isLoading, isError, error } = useGetActivitiesQuery()
 
   const handleSelectActivity = (activityId: number) => {
     onClick(activityId)
   }
 
-  let content
-
   if (isLoading) {
-    content = <p key='content-loading'>isLoading...</p>
-  } else if (isSuccess) {
-    content = activities?.map((activity) => (
-      <ListItem key={activity.activityId} onClick={() => handleSelectActivity(activity.activityId)}>
-        {activity.name}
-      </ListItem>
-    ))
+    return <p key='content-loading'>isLoading...</p>
   } else if (isError) {
-    content = <div key='content'>{error?.toString()}</div>
+    return <div key='content'>{error?.toString()}</div>
   }
 
   return (
     <section className='activities-list'>
-      <Title>activities</Title>
-      <List>{content}</List>
+      <List>
+        {activities?.map((activity) => (
+          <ListItem
+            key={activity.activityId}
+            className='p-2'
+            onClick={() => handleSelectActivity(activity.activityId)}
+          >
+            <DotText text={activity.name} color={activity.color} />
+          </ListItem>
+        ))}
+      </List>
     </section>
   )
 }
