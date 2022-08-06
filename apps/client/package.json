@@ -1,0 +1,94 @@
+{
+  "name": "client",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview --port 8080",
+    "test:watch": "jest --watchAll",
+    "test": "jest",
+    "typescript": "tsc --project tsconfig.json --noEmit",
+    "lint": "eslint src --color",
+    "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json}'",
+    "prettier": "prettier src -check",
+    "prettier:format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "lint-staged": "lint-staged --config .lintstagedrc.json",
+    "prepare": "husky install",
+    "cypress:open": "cypress open",
+    "cypress:open:build": "yarn build && (yarn preview&) && cypress open",
+    "cypress:run": "yarn cypress run --browser chrome"
+  },
+  "dependencies": {
+    "@heroicons/react": "^1.0.6",
+    "@reduxjs/toolkit": "^1.7.2",
+    "date-fns": "^2.28.0",
+    "react": "^17.0.2",
+    "react-content-loader": "^6.1.0",
+    "react-dom": "^17.0.2",
+    "react-hook-form": "^7.30.0",
+    "react-redux": "^7.2.6",
+    "react-router-dom": "6",
+    "whatwg-fetch": "^3.6.2"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "@dherv/barbarian-with-style": "^1.0.4",
+    "@swc/cli": "^0.1.55",
+    "@swc/core": "^1.2.143",
+    "@swc/jest": "^0.2.17",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.3",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.23.0",
+    "@typescript-eslint/parser": "^5.23.0",
+    "@vitejs/plugin-react": "^1.0.7",
+    "autoprefixer": "^10.4.5",
+    "cypress": "^10.3.0",
+    "eslint": "^8.15.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.5.0",
+    "husky": "^8.0.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.5.1",
+    "lint-staged": "^12.4.1",
+    "msw": "^0.38.1",
+    "postcss": "^8.4.12",
+    "prettier": "^2.6.2",
+    "tailwindcss": "^3.0.24",
+    "tsc-files": "^1.1.3",
+    "typescript": "^4.5.4",
+    "vite": "^2.8.0"
+  },
+  "msw": {
+    "workerDirectory": "public"
+  },
+  "jest": {
+    "roots": [
+      "./src"
+    ],
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupFilesAfterEnv.ts"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less)$": "identity-obj-proxy"
+    },
+    "transform": {
+      "^.+\\.(t|j)sx?$": [
+        "@swc/jest",
+        {
+          "configFile": ".swcrc"
+        }
+      ]
+    }
+  }
+}
