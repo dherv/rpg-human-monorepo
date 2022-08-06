@@ -2,6 +2,7 @@ export interface Activity {
   activityId: number
   name: string
   duration: number
+  color: string
 }
 
 export interface Session {
@@ -13,7 +14,7 @@ export interface Session {
   improvement?: string
   proud?: string
   newSkill?: string
-  activity?: Activity
+  activity: Activity
 }
 
 // TODO: remove if not used in future
