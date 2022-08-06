@@ -1,0 +1,5 @@
+{
+  "apps/**/*.{js,jsx,ts,tsx}": ["eslint --max-warnings=0"],
+  "**/*.{ts, tsx}": "tsc-files --noEmit",
+  "*.{js,jsx,ts,tsx,json,css,js}": ["prettier --write"]
+}
