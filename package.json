@@ -1,0 +1,16 @@
+{
+  "name": "rpg-human-monorepo",
+  "version": "1.0.0",
+  "workspaces": [
+    "docs",
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "turbo": "^1.4.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev"
+  }
+}

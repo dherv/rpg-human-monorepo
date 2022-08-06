@@ -1,0 +1,9 @@
+## base
+node_modules
+.vscode
+
+## build folder 
+dist/**
+
+## logs
+*.log
