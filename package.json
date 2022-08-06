@@ -15,6 +15,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "test": "turbo run test --filter=client",
+    "typescript": "turbo run typescript --filter=client",
     "lint-staged": "lint-staged --config .lintstagedrc.json",
     "prepare": "husky install"
   },
