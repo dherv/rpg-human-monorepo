@@ -3,8 +3,13 @@
   "baseBranch": "origin/main",
   "pipeline": {
     "dev": {},
-    "build": {
-      "dependsOn": ["^build"]
-    }
+    "build": {},
+    "test": {},
+    "lint": {},
+    "typescript": {},
+    "preview": {},
+    "cypress:run": {},
+    "cypress:open:build": {},
+    "prettier": {}
   }
 }
