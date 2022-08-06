@@ -8,6 +8,7 @@
     "lint": {},
     "typescript": {},
     "preview": {},
-    "cypress": {}
+    "cypress": {},
+    "prettier": {}
   }
 }
