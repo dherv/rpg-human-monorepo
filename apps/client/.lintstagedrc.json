@@ -1,8 +1,9 @@
 {
   "*.{js,jsx,ts,tsx}": [
     "eslint --max-warnings=0",
-    "yarn test --bail --watchAll=false --findRelatedTests --passWithNoTests"
+    "yarn test --bail --watchAll=false --passWithNoTests"
   ],
-  "**/*.{ts, tsx}": "tsc-files --noEmit",
+  "src/**/*.{ts, tsx}": "tsc-files --noEmit --project tsconfig.json",
+  "cypress/**/*.{ts, tsx}": "tsc-files --noEmit --project cypress/tsconfig.json",
   "*.{js,jsx,ts,tsx,json,css,js}": ["prettier --write"]
 }

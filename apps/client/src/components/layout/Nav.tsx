@@ -1,5 +1,5 @@
-import { FC } from 'react'
 import { AdjustmentsIcon, MenuAlt2Icon, PlusIcon } from '@heroicons/react/outline'
+import { FC } from 'react'
 import { CustomLink } from './CustomLink'
 
 export const Nav: FC = () => {
@@ -20,7 +20,7 @@ export const Nav: FC = () => {
               <MenuAlt2Icon className='h-4 w-4 text-gray-600' />
             </CustomLink>
           </li>
-          <li className='mx-2'>
+          <li className='mx-2' data-cy='session-add'>
             <CustomLink to='/new-session'>
               <PlusIcon className='h-4 w-4 text-gray-600' />
             </CustomLink>
