@@ -1,7 +1,7 @@
 import { activitiesMock, sessionsMock } from '../../src/mocks/mocks'
 
 describe('sessions list', () => {
-  it.skip('should show the list of sessions', () => {
+  it('should show the list of sessions', () => {
     cy.visit('http://localhost:8080')
     cy.intercept('http://localhost:5000/v1/activities', activitiesMock).as('activities')
     cy.intercept('http://localhost:5000/v1/sessions?month=6&year=2022', sessionsMock).as('sessions')
