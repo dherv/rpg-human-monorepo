@@ -44,7 +44,7 @@ install:
     - echo $GITHUB_PKG_REGISTRY >> ~/.npmrc
     - echo $GITHUB_PKG_TOKEN >> ~/.npmrc
     - npm ci
-    - npm run build --filter=client
+    - npm run build
   after_script:
     - echo $CI_JOB_STATUS
     - >
@@ -73,7 +73,7 @@ linter:
       --data '{"state": "pending", "description": "Gitlab-CI is building the commit", "context": "gitlab-linter"}'
       $GITHUB_REPO_URL || true
   script:
-    - npm run lint --filter=client
+    - npm run lint
   after_script:
     - echo $CI_JOB_STATUS
     - >
@@ -97,7 +97,7 @@ unit:
       --data '{"state": "pending", "description": "Gitlab-CI is building the commit", "context": "gitlab-unit"}'
       $GITHUB_REPO_URL || true
   script:
-    - npm run test  --filter=client
+    - npm run test
   after_script:
     - echo $CI_JOB_STATUS
     - >
@@ -121,7 +121,7 @@ typescript:
       --data '{"state": "pending", "description": "Gitlab-CI is building the commit", "context": "gitlab-typescript"}'
       $GITHUB_REPO_URL || true
   script:
-    - npm run typescript --filter=client
+    - npm run typescript
   after_script:
     - echo $CI_JOB_STATUS
     - >
@@ -145,8 +145,8 @@ cypress test:
       --data '{"state": "pending", "description": "Gitlab-CI is building the commit", "context": "gitlab-cypress"}'
       $GITHUB_REPO_URL || true
   script:
-    - npm run preview --filter=client &
-    - npm run cypress --filter=client run --record --key 295871b0-fbab-4338-abd8-9320895a84f0 --browser chrome --group "UI - Chrome"
+    - npm run preview &
+    - npm run cypress run --record --key 295871b0-fbab-4338-abd8-9320895a84f0 --browser chrome --group "UI - Chrome"
   after_script:
     - echo $CI_JOB_STATUS
     - >
