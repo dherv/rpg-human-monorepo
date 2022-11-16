@@ -1,6 +1,7 @@
 FROM node:16
 WORKDIR /app
 COPY package.json .
-RUN yarn install
+RUN npm ci
 COPY . .
-CMD yarn dev
+RUN npm run build
+CMD node dist/index.js

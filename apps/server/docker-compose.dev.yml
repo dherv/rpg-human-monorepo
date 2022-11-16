@@ -17,7 +17,7 @@ services:
       - db
     build: .
     restart: unless-stopped
-    env_file: ./.env
+    env_file: ./.env.dev
     ports:
       - $PORT:$NODE_DOCKER_PORT
     environment:

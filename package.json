@@ -19,7 +19,7 @@
     "typescript": "turbo run typescript --filter=client",
     "lint": "turbo run lint --filter=client",
     "prettier": "turbo run prettier --filter=client",
-    "preview": "turbo run preview --filter=client",
+    "preview": "turbo run preview",
     "cypress:open:build": "turbo run cypress:open:build --filter=client",
     "cypress:run": "turbo run cypress:run --filter=client",
     "lint-staged": "lint-staged --config .lintstagedrc.json",

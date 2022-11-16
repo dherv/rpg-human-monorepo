@@ -1,0 +1,6 @@
+# Info
+
+## Liquibase
+
+to run a migration:
+`liquibase --defaultFile liquibase.properties update`
