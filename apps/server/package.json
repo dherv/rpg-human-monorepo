@@ -9,7 +9,8 @@
     "clean": "tsc --build --clean",
     "preview": "npm run build && node ./dist/index.js",
     "test": "jest",
-    "test:int": "sh ./scripts/run-integration-tests.sh"
+    "test:int": "sh ./scripts/run-integration-tests.sh",
+    "lint": "eslint"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -32,7 +33,8 @@
     "supertest": "^6.2.2",
     "ts-jest": "^27.1.3",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.5"
+    "typescript": "^4.5.5",
+    "eslint-config-custom": "*"
   },
   "jest": {
     "transform": {

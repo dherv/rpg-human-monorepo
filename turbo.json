@@ -1,6 +1,13 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "baseBranch": "origin/main",
+  "globalDependencies": [
+    "$PORT",
+    "$DATABASE_HOST",
+    "$DATABASE_USER",
+    "$DATABASE_PASSWORD",
+    "$DATABASE_NAME",
+    "$NODE_ENV"
+  ],
   "pipeline": {
     "dev": {},
     "build": {},

@@ -1,12 +1,13 @@
-import { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
-import { SessionsQueryParams } from "./sessions.types";
+import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise'
+import { SessionsQueryParams } from './sessions.types'
 
-const TABLE = `sessions`;
-const PRIMARY_KEY = `session_id`;
-const SELECT_MAIN = `SELECT *, session_id as sessionId, activity_id as activityId, character_id as characterId`;
+const TABLE = `sessions`
+const PRIMARY_KEY = `session_id`
+const SELECT_MAIN = `SELECT *, session_id as sessionId, activity_id as activityId, character_id as characterId`
 
 export const sessionsRepositoryFactory = (pool: Pool) => ({
-  findAll: async (filters?: SessionsQueryParams): Promise<any> => {
+  // TODO: replace by type once types shared in monorepo
+  findAll: async (filters?: SessionsQueryParams): Promise<unknown> => {
     try {
       // query
       const [rows] = (await pool.query(
@@ -18,24 +19,24 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
         AND sessionYear = IFNULL(?, sessionYear)
         `,
         [
-          filters?.activity_id ?? null,
+          filters?.activityId ?? null,
           filters?.month ?? null,
           filters?.year ?? null,
         ]
-      )) as RowDataPacket[][];
+      )) as RowDataPacket[][]
 
       // relation
       const rowsMap = rows.map(async (session) => {
         const [activities] = (await pool.query(
           `SELECT *, activity_id as activityId, character_id as characterId FROM activities WHERE activity_id = ${session.activityId} LIMIT 1`
-        )) as RowDataPacket[];
-        return { ...session, activity: activities[0] };
-      });
+        )) as RowDataPacket[]
+        return { ...session, activity: activities[0] }
+      })
 
-      return Promise.all(rowsMap);
+      return Promise.all(rowsMap)
     } catch (error) {
-      console.error(error);
-      return error;
+      console.error(error)
+      return error
     }
   },
   findOne: async (id: string) => {
@@ -43,33 +44,41 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
       const [rows] = (await pool.query(
         `${SELECT_MAIN} FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
         [id]
-      )) as RowDataPacket[];
-      const session = rows[0];
+      )) as RowDataPacket[]
+      const session = rows[0]
 
       if (session) {
         const [activities] = (await pool.query(
           `SELECT *, activity_id as activityId, character_id as characterId FROM activities WHERE activity_id = ${session.activityId} LIMIT 1`
-        )) as RowDataPacket[];
-        return { ...session, activity: activities[0] };
+        )) as RowDataPacket[]
+        return { ...session, activity: activities[0] }
       }
-      return undefined;
+      return undefined
     } catch (error) {
-      console.error(error);
-      return error;
+      console.error(error)
+      return error
     }
   },
   // TODO: add proper types
 
-  create: async (body: any) => {
+  create: async (body: {
+    duration: number
+    date: number
+    characterId: number
+    activityId: number
+    note?: string
+    proud?: string
+    improvement?: string
+  }) => {
     try {
       // TODO: add proper validation
       if (
         !body.duration ||
         !body.date ||
-        !body.character_id ||
-        !body.activity_id
+        !body.characterId ||
+        !body.activityId
       ) {
-        throw new Error("body not defined");
+        throw new Error('body not defined')
       }
 
       // TODO: insert only of character exists
@@ -82,33 +91,44 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
           body.note ?? null,
           body.improvement ?? null,
           body.proud ?? null,
-          body.character_id,
-          body.activity_id,
+          body.characterId,
+          body.activityId,
         ]
-      );
-      const { insertId } = result as ResultSetHeader;
+      )
+      const { insertId } = result as ResultSetHeader
 
       // Get new item
       const [rows] = (await pool.query(
         `${SELECT_MAIN} FROM ${TABLE} WHERE ${PRIMARY_KEY} = ${insertId} LIMIT 1`
-      )) as RowDataPacket[];
-      const session = rows[0];
+      )) as RowDataPacket[]
+      const session = rows[0]
 
-      return session;
+      return session
     } catch (error) {
-      console.error(error);
-      return error;
+      console.error(error)
+      return error
     }
   },
-  update: async (id: string, body: any) => {
+  update: async (
+    id: string,
+    body: {
+      duration: number
+      date: number
+      characterId: number
+      activityId: number
+      note?: string
+      proud?: string
+      improvement?: string
+    }
+  ) => {
     try {
       if (
         !body.duration ||
         !body.date ||
-        !body.character_id ||
-        !body.activity_id
+        !body.characterId ||
+        !body.activityId
       ) {
-        throw new Error("body not defined");
+        throw new Error('body not defined')
       }
       // TODO: update only if character exists
       // Update
@@ -122,26 +142,26 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
           body.proud || null,
           id,
         ]
-      );
+      )
 
       // GET new item
       const [rows] = (await pool.query(
         `${SELECT_MAIN} FROM ${TABLE} WHERE ${PRIMARY_KEY} = ? LIMIT 1`,
         [id]
-      )) as RowDataPacket[];
-      const session = rows[0];
-      return session;
+      )) as RowDataPacket[]
+      const session = rows[0]
+      return session
     } catch (error) {
-      console.error(error);
-      return error;
+      console.error(error)
+      return error
     }
   },
   delete: async (id: string) => {
     try {
-      await pool.execute(`DELETE FROM ${TABLE} WHERE ${PRIMARY_KEY} = ?`, [id]);
+      await pool.execute(`DELETE FROM ${TABLE} WHERE ${PRIMARY_KEY} = ?`, [id])
     } catch (error) {
-      console.error(error);
-      return error;
+      console.error(error)
+      return error
     }
   },
-});
+})

@@ -9,7 +9,8 @@
     "test:watch": "jest --watchAll",
     "test": "jest",
     "typescript": "tsc --project tsconfig.json --noEmit",
-    "lint": "eslint src --color",
+    "lint": "eslint",
+    "lint:color": "eslint src --color",
     "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json}'",
     "prettier": "prettier src -check",
     "prettier:format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
@@ -30,7 +31,8 @@
     "react-hook-form": "^7.30.0",
     "react-redux": "^7.2.6",
     "react-router-dom": "6",
-    "whatwg-fetch": "^3.6.2"
+    "whatwg-fetch": "^3.6.2",
+    "eslint-config-custom": "*"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.11",
