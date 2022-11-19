@@ -28,5 +28,9 @@
     "lint-staged": "lint-staged --config .lintstagedrc.json",
     "prepare": "husky install"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "date-fns": "^2.29.3",
+    "zod": "^3.19.1"
+  }
 }
