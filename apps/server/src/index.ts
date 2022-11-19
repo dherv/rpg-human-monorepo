@@ -7,11 +7,12 @@ import * as dotenv from 'dotenv'
 import express from 'express'
 import helmet from 'helmet'
 import mysql from 'mysql2'
+import path from 'path'
 import { activitiesRouter } from './activities/activities.router'
 import { charactersRouter } from './characters/characters.router'
 import { sessionsRouter } from './sessions/sessions.router'
 
-dotenv.config()
+dotenv.config({ path: path.join(__dirname, `../.env.${process.env.NODE_ENV}`) })
 
 /**
  * App Variables
@@ -40,6 +41,9 @@ const connection = mysql
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
+    port: process.env.DATABASE_PORT
+      ? Number(process.env.DATABASE_PORT)
+      : undefined,
   })
   .promise()
 

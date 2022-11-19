@@ -6,6 +6,7 @@
     "$DATABASE_USER",
     "$DATABASE_PASSWORD",
     "$DATABASE_NAME",
+    "$DATABASE_PORT",
     "$NODE_ENV"
   ],
   "pipeline": {
@@ -14,7 +15,8 @@
     "test": {},
     "lint": {},
     "typescript": {},
-    "preview": {},
+    "preview:dev": {},
+    "preview:prod": {},
     "cypress:run": {},
     "cypress:open:build": {},
     "prettier": {}
