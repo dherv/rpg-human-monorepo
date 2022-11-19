@@ -1,4 +1,5 @@
 import { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise'
+import { formatDateTime } from '../helpers'
 import { SessionsQueryParams } from './sessions.types'
 
 const TABLE = `sessions`
@@ -63,7 +64,7 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
 
   create: async (body: {
     duration: number
-    date: number
+    date: string
     characterId: number
     activityId: number
     note?: string
@@ -81,13 +82,15 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
         throw new Error('body not defined')
       }
 
+      const formatDate = formatDateTime(body.date)
+
       // TODO: insert only of character exists
       // Insert
       const [result] = await pool.execute(
         `INSERT INTO ${TABLE} (duration, date, note, improvement, proud, character_id, activity_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [
           body.duration,
-          body.date,
+          formatDate,
           body.note ?? null,
           body.improvement ?? null,
           body.proud ?? null,
@@ -113,7 +116,7 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
     id: string,
     body: {
       duration: number
-      date: number
+      date: string
       characterId: number
       activityId: number
       note?: string
@@ -130,13 +133,16 @@ export const sessionsRepositoryFactory = (pool: Pool) => ({
       ) {
         throw new Error('body not defined')
       }
+
+      const formatDate = formatDateTime(body.date)
+
       // TODO: update only if character exists
       // Update
       await pool.execute(
         `UPDATE ${TABLE} SET duration = ?, date = ?, note = ?, improvement = ?, proud = ? WHERE ${PRIMARY_KEY} = ?`,
         [
           body.duration,
-          body.date,
+          formatDate,
           body.note || null,
           body.improvement || null,
           body.proud || null,

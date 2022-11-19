@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview:dev": "vite preview --port 8080",
-    "preview:prod": "vite preview --port 8080",
+    "preview:dev": "npm run build && vite preview --port 8080",
+    "preview:prod": "npm run build && vite preview --port 8080",
     "test:watch": "jest --watchAll",
     "test": "jest",
     "typescript": "tsc --project tsconfig.json --noEmit",
