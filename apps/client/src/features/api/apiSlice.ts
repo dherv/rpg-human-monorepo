@@ -46,7 +46,7 @@ export const apiSlice = createApi({
       Session,
       {
         activityId: number
-        date: string
+        date: Date
         duration: string
         note: string
         improvement: string
