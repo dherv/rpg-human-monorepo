@@ -31,7 +31,7 @@ export const handlers = [
 
     const sessions = sessionsMock.filter((session) => {
       const activityFilter = !activity || session.activityId === Number(activity),
-        monthFilter = !month || new Date(session.date).getMonth() === Number(month),
+        monthFilter = !month || new Date(session.date).getMonth() + 1 === Number(month),
         yearFilter = !year || new Date(session.date).getFullYear() === Number(year)
 
       return activityFilter && monthFilter && yearFilter

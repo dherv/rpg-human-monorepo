@@ -42,7 +42,7 @@ describe('SessionAdd component', () => {
     userEvent.clear(input)
     userEvent.click(submit)
     await waitFor(() => {
-      expect(screen.getByText('please enter a date')).toBeDefined()
+      expect(screen.getByText('please enter a valid date')).toBeDefined()
     })
   })
 
@@ -53,7 +53,7 @@ describe('SessionAdd component', () => {
     userEvent.type(input, 'test')
     userEvent.click(submit)
     await waitFor(() => {
-      expect(screen.getByText('please enter a date in the valid format: 01/01/2022')).toBeDefined()
+      expect(screen.getByText('please enter a valid date')).toBeDefined()
     })
   })
 

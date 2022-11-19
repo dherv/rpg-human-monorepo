@@ -1,34 +1,51 @@
 import { Button, Form, Input, TextArea } from '@dherv-co/barbarian-with-style'
-import { format } from 'date-fns'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { FC, useEffect } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import * as z from 'zod'
 import { useAddNewSessionMutation } from '../../features/api/apiSlice'
 import { Activity } from '../../types/types'
-
+import { DateTimePicker } from './DateTimePicker'
 interface Props {
   activity: Activity
 }
 
-type Inputs = {
-  date: string
+export type Inputs = {
+  date: Date
   duration: string
   note: string
   improvement: string
   proud: string
 }
 
+const schema = z.object({
+  date: z.date({
+    // eslint-disable-next-line camelcase
+    // required_error: 'please enter a date',
+    // eslint-disable-next-line camelcase
+    invalid_type_error: 'please enter a valid date',
+  }),
+  duration: z.string().min(1, {
+    message: 'duration is required',
+  }),
+  note: z.string().min(1, { message: 'please enter a note' }),
+  improvement: z.string(),
+  proud: z.string(),
+})
+
 export const SessionAdd: FC<Props> = ({ activity }) => {
   const navigate = useNavigate()
   const [addNewMutation, { isLoading, isSuccess }] = useAddNewSessionMutation()
   const { handleSubmit, control, reset } = useForm<Inputs>({
     defaultValues: {
-      date: format(Date.now(), 'MM/dd/yyyy'),
+      date: new Date(),
       duration: activity?.duration.toString(),
       note: '',
       improvement: '',
       proud: '',
     },
+    resolver: zodResolver(schema),
   })
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -38,15 +55,14 @@ export const SessionAdd: FC<Props> = ({ activity }) => {
     })
   }
 
-  const handleNavigateSessions = () => navigate('/sessions', { replace: true })
-
   useEffect(() => {
+    const handleNavigateSessions = () => navigate('/sessions', { replace: true })
     if (isSuccess) {
       reset()
       handleNavigateSessions()
       setTimeout(handleNavigateSessions, 1000)
     }
-  }, [isSuccess])
+  }, [isSuccess, reset, navigate])
 
   let buttonText = 'log session'
   if (isLoading) buttonText = '...'
@@ -60,20 +76,14 @@ export const SessionAdd: FC<Props> = ({ activity }) => {
           control={control}
           rules={{
             required: 'please enter a date',
-            pattern: {
-              value: /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/i,
-              message: 'please enter a date in the valid format: 01/01/2022',
-            },
           }}
-          render={({ field, fieldState: { error } }) => (
-            <Input
-              label='date'
-              type='text'
-              id='date'
-              placeholder={format(new Date(2016, 0, 1), 'MM/dd/yyyy')}
-              error={error?.message}
-              {...field}
-            ></Input>
+          render={(props) => (
+            <>
+              <label htmlFor='date' className='block mb-1 font-medium'>
+                date
+              </label>
+              <DateTimePicker {...props} />
+            </>
           )}
         />
       </div>
@@ -83,17 +93,19 @@ export const SessionAdd: FC<Props> = ({ activity }) => {
           name='duration'
           control={control}
           rules={{ required: 'please enter a duration' }}
-          render={({ field, fieldState: { error } }) => (
-            <Input
-              label='duration'
-              type='number'
-              min={1}
-              id='duration'
-              placeholder='3'
-              error={error?.message}
-              {...field}
-            ></Input>
-          )}
+          render={({ field, fieldState }) => {
+            return (
+              <Input
+                label='duration'
+                type='number'
+                min={1}
+                id='duration'
+                placeholder='...'
+                error={fieldState.error?.message}
+                {...field}
+              ></Input>
+            )
+          }}
         />
       </div>
 
@@ -101,7 +113,6 @@ export const SessionAdd: FC<Props> = ({ activity }) => {
         <Controller
           name='note'
           control={control}
-          rules={{ required: 'please enter a note' }}
           render={({ field, fieldState: { error } }) => (
             <TextArea
               label='note'

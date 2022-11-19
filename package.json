@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "turbo run build --filter=client",
-    "dev": "turbo run dev",
+    "dev": "NODE_ENV=development turbo run dev",
     "test": "turbo run test --filter=client",
     "typescript": "turbo run typescript --filter=client",
     "lint": "turbo run lint",
