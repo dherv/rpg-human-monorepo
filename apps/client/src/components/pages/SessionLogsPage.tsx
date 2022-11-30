@@ -1,27 +1,53 @@
-import { List, Stack } from '@dherv-co/barbarian-with-style'
+import { List } from '@dherv-co/barbarian-with-style'
+import FilterListIcon from '@mui/icons-material/FilterList'
+import { Box, Button, Stack, Typography } from '@mui/joy'
 import { getMonth, getYear } from 'date-fns'
 import { FC, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useGetSessionsQuery } from '../../features/api/apiSlice'
-import { FilterActivities } from '../base/FilterActivities'
-import { FilterMonth } from '../base/FilterMonth'
-import { FilterYear } from '../base/FilterYear'
+import { SessionQueryParams } from '../../types/api/SessionQueryParams'
+import { SessionsFilters as Filters } from '../features/session/SessionsFilters'
 import { SessionLog } from '../features/SessionLog'
 
+const initialState = {
+  activity: undefined,
+  month: getMonth(new Date()) + 1,
+  year: getYear(new Date()),
+}
+
 export const SessionLogsPage: FC = () => {
-  // TODO: set default month and year and query by this ?
-  const [month, setMonth] = useState<number | undefined>(getMonth(new Date()))
-  const [year, setYear] = useState<number | undefined>(getYear(new Date()))
-  const [activity, setActivity] = useState<number>()
-  const { data: sessions } = useGetSessionsQuery({ activity, month, year })
-  // TODO: move to useReducer and group ?
+  const navigate = useNavigate()
+  const [filters, setFilters] = useState<SessionQueryParams>(initialState)
+  const [isFilterOpen, setFilterState] = useState<boolean>(false)
+  const { data: sessions } = useGetSessionsQuery(filters)
+
+  const handleChangeFilter = (name: string, value?: number) => {
+    // value needs to be undefined when sent to query
+    setFilters((prev) => ({ ...prev, [name]: value }))
+  }
+
   return (
     <section>
-      <Stack spacing={4}>
-        <>
-          <FilterMonth month={month} onChange={(month) => setMonth(month)} />
-          <FilterYear year={year} onChange={(year) => setYear(year)} />
-          <FilterActivities activity={activity} onChange={(activity) => setActivity(activity)} />
-        </>
+      <Stack spacing={4} className='max-w-4xl'>
+        <Stack direction='row' justifyContent='space-between' alignItems={'center'}>
+          <Typography level='h3'>Sessions</Typography>
+          <Button size='sm' variant='soft' onClick={() => navigate('/new-session')}>
+            Add
+          </Button>
+        </Stack>
+
+        <Box sx={{ marginLeft: 'auto' }}>
+          <Button
+            startDecorator={<FilterListIcon />}
+            size='sm'
+            variant='outlined'
+            color='neutral'
+            onClick={() => setFilterState((prev) => !prev)}
+          >
+            Filters
+          </Button>
+        </Box>
+        <Filters filters={filters} onChange={handleChangeFilter} isOpen={isFilterOpen} />
         <List data-cy='session-log-list'>
           {sessions?.map((session) => (
             <SessionLog key={session.sessionId} session={session} />
