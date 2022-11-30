@@ -1,36 +1,47 @@
-import { ChangeEvent, FC } from 'react'
-
+import { FormControl } from '@mui/joy'
+import FormLabel from '@mui/joy/FormLabel'
+import Option from '@mui/joy/Option'
+import Select from '@mui/joy/Select'
+import { FC } from 'react'
+import { SelectEvent } from '../features/session/SessionsFilters'
 interface Props {
   month?: number
-  onChange: (month?: number) => void
+  onChange: (event: SelectEvent, value: number | null) => void
 }
 
 export const FilterMonth: FC<Props> = ({ month, onChange }) => {
-  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value ? Number(event.target.value) : undefined
-    onChange(value)
-  }
-
   return (
-    <>
-      <label hidden htmlFor='month'>
+    <FormControl sx={{ minWidth: 240 }}>
+      <FormLabel id='month' htmlFor='month-button'>
         month
-      </label>
-      <select id='month' value={month} name='month' onChange={handleChange}>
-        <option value={''}>all</option>
-        <option value={0}>January</option>
-        <option value={1}>February</option>
-        <option value={2}>March</option>
-        <option value={3}>April</option>
-        <option value={4}>May</option>
-        <option value={5}>June</option>
-        <option value={6}>July</option>
-        <option value={7}>August</option>
-        <option value={8}>September</option>
-        <option value={9}>October</option>
-        <option value={10}>November</option>
-        <option value={11}>December</option>
-      </select>
-    </>
+      </FormLabel>
+      <Select
+        defaultValue={month}
+        name='month'
+        onChange={onChange}
+        componentsProps={{
+          button: {
+            id: 'month-button',
+            // TODO: Material UI set aria-labelledby correctly & automatically
+            // but MUI Base and Joy UI don't yet.
+            'aria-labelledby': 'month-label month-button',
+          },
+        }}
+      >
+        <Option value={null}>all</Option>
+        <Option value={1}>January</Option>
+        <Option value={2}>February</Option>
+        <Option value={3}>March</Option>
+        <Option value={4}>April</Option>
+        <Option value={5}>May</Option>
+        <Option value={6}>June</Option>
+        <Option value={7}>July</Option>
+        <Option value={8}>August</Option>
+        <Option value={9}>September</Option>
+        <Option value={10}>October</Option>
+        <Option value={11}>November</Option>
+        <Option value={12}>December</Option>
+      </Select>
+    </FormControl>
   )
 }

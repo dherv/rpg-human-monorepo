@@ -1,5 +1,6 @@
 // Import the RTK Query methods from the React-specific entry point
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { SessionQueryParams } from '../../types/api/SessionQueryParams'
 import { Activity, Character, Session } from '../../types/types'
 
 // Define our single API slice object
@@ -28,10 +29,10 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['Activity'],
     }),
-    getSessions: builder.query<Session[], { activity?: number; month?: number; year?: number }>({
+    getSessions: builder.query<Session[], SessionQueryParams>({
       query: ({ activity, month, year }) => ({
         url: '/sessions',
-        params: { activity, month: month ? month + 1 : undefined, year },
+        params: { activity, month, year },
       }),
       providesTags: ['Session'],
     }),

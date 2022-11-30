@@ -1,28 +1,39 @@
-import { ChangeEvent, FC } from 'react'
-
+import { FormControl } from '@mui/joy'
+import FormLabel from '@mui/joy/FormLabel'
+import Option from '@mui/joy/Option'
+import Select from '@mui/joy/Select'
+import { FC } from 'react'
+import { SelectEvent } from '../features/session/SessionsFilters'
 interface Props {
   year?: number
-  onChange: (year?: number) => void
+  onChange: (event: SelectEvent, value: number | null) => void
 }
 
 // TODO: combine logic with FilterMonth
 export const FilterYear: FC<Props> = ({ year, onChange }) => {
-  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value ? Number(event.target.value) : undefined
-    onChange(value)
-  }
-
   return (
-    <>
-      <label hidden htmlFor='year'>
+    <FormControl sx={{ minWidth: 240 }}>
+      <FormLabel id='year' htmlFor='year-button'>
         year
-      </label>
-      <select id='year' value={year} name='year' onChange={handleChange}>
-        <option value={''}>all</option>
-        <option value={2022}>2022</option>
-        <option value={2021}>2021</option>
-        <option value={2020}>2020</option>
-      </select>
-    </>
+      </FormLabel>
+      <Select
+        defaultValue={year}
+        name='year'
+        onChange={onChange}
+        componentsProps={{
+          button: {
+            id: 'year-button',
+            // TODO: Material UI set aria-labelledby correctly & automatically
+            // but MUI Base and Joy UI don't yet.
+            'aria-labelledby': 'year-label year-button',
+          },
+        }}
+      >
+        <Option value={null}>all</Option>
+        <Option value={2022}>2022</Option>
+        <Option value={2021}>2021</Option>
+        <Option value={2020}>2020</Option>
+      </Select>
+    </FormControl>
   )
 }

@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { format } from 'date-fns'
 import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 import { store } from '../../app/store'
 import { SessionLogsPage } from './SessionLogsPage'
 
@@ -10,7 +11,9 @@ describe('SessionLogs component', () => {
   beforeEach(() =>
     render(
       <Provider store={store}>
-        <SessionLogsPage {...baseProps} />
+        <BrowserRouter>
+          <SessionLogsPage {...baseProps} />
+        </BrowserRouter>
       </Provider>,
     ),
   )
@@ -28,8 +31,9 @@ describe('SessionLogs component', () => {
   })
 
   it('should set the default month and year to today date', async () => {
+    userEvent.click(screen.getByText('Filters'))
     const month = format(Date.now(), 'MMMM')
-    expect(await screen.findByLabelText('month')).toHaveDisplayValue(month)
+    expect(await screen.findByText(month)).toBeDefined()
   })
 
   // FIXME: test is very slow and working only on it.only mode
