@@ -5,7 +5,7 @@ import ErrorBoundary from '../app/ErrorBoundary'
 import { SessionGraph } from '../components/base/SessionGraph'
 import { NotFound } from '../components/pages/NotFound'
 import { SessionLogsPage } from '../components/pages/SessionLogsPage'
-
+import { Flag } from '../services/flags/Flag'
 // Not exported as default need the promise default setup
 const Character = React.lazy(() =>
   import('../components/base/Character').then(({ Character }) => ({
@@ -40,14 +40,22 @@ export const AppRouter: FC = () => {
                 </React.Suspense>
               }
             />
+
             <Route
               path='character'
               element={
-                <React.Suspense fallback={<>...</>}>
-                  <Character />
-                </React.Suspense>
+                <Flag
+                  features={['character']}
+                  renderOn={() => (
+                    <React.Suspense fallback={<>...</>}>
+                      <Character />
+                    </React.Suspense>
+                  )}
+                  renderOff={() => <div>Coming soon</div>}
+                ></Flag>
               }
             />
+
             <Route
               path='new-session'
               element={
