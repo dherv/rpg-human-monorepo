@@ -38,6 +38,7 @@ export const Nav: FC = () => {
       borderRight: `1px solid ${theme.colorSchemes.light.palette.divider}`,
     },
   }))
+
   return (
     <Root>
       <Tabs
@@ -46,7 +47,7 @@ export const Nav: FC = () => {
         size='lg'
         orientation={matches ? 'vertical' : 'horizontal'}
         onChange={handleChange}
-        value={location.pathname}
+        value={location.pathname.split('/')[1]}
         sx={{
           width: '100%',
           mx: 0,
@@ -74,15 +75,15 @@ export const Nav: FC = () => {
             },
           }}
         >
-          <Tab value='/activities'>
+          <Tab value='activities'>
             <Terrain />
             <Typography level='body5'>activities</Typography>
           </Tab>
-          <Tab value='/sessions'>
+          <Tab value='sessions'>
             <SsidChart />
             <Typography level='body5'>sessions</Typography>
           </Tab>
-          <Tab value='/character'>
+          <Tab value='character'>
             <PersonPin />
             <Typography level='body5'>character</Typography>
           </Tab>

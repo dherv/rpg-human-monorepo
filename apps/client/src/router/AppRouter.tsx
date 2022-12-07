@@ -31,6 +31,14 @@ export const AppRouter: FC = () => {
             <Route path='sessions'>
               <Route index element={<SessionLogsPage />}></Route>
               <Route path='graph' element={<SessionGraph />}></Route>
+              <Route
+                path='add'
+                element={
+                  <React.Suspense fallback={<>...</>}>
+                    <SessionAddPage />
+                  </React.Suspense>
+                }
+              />
             </Route>
             <Route
               path='activities'
@@ -56,14 +64,6 @@ export const AppRouter: FC = () => {
               }
             />
 
-            <Route
-              path='new-session'
-              element={
-                <React.Suspense fallback={<>...</>}>
-                  <SessionAddPage />
-                </React.Suspense>
-              }
-            />
             <Route path='*' element={<NotFound />} />
           </Route>
         </Routes>
