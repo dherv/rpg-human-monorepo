@@ -31,7 +31,7 @@ export const SessionLogsPage: FC = () => {
       <Stack spacing={4} className='max-w-4xl'>
         <Stack direction='row' justifyContent='space-between' alignItems={'center'}>
           <Typography level='h3'>Sessions</Typography>
-          <Button size='sm' variant='soft' onClick={() => navigate('/new-session')}>
+          <Button size='sm' variant='soft' onClick={() => navigate('/sessions/add')}>
             Add
           </Button>
         </Stack>
